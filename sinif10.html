@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>10. Sınıf Tarih Portalı – Boğaziçi MTAL</title>
+    <link rel="icon" type="image/png" href="https://depo.kirkyama.uk/favicon.png">
+    <!-- Tema-5 ile aynı font çifti; sadece renk değişiyor -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Marcellus&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+
+    <link rel="stylesheet" href="stiller/ortak-stil.css">
+    <link rel="stylesheet" href="stiller/sinif10.css">
+    <link rel="stylesheet" href="stiller/oyunlar.css">
+    <link rel="stylesheet" href="stiller/rehber.css">
+    <link rel="stylesheet" href="stiller/dinamik-url.css">
+</head>
+<body oncontextmenu="return false;">
+
+<!-- ═══ ARKA PLAN KATMANLARI ═══ -->
+<div class="ottoman-bg" id="ottomanBg"></div>
+<div class="ottoman-starfield" id="ottomanStarfield"></div>
+<div class="ottoman-skyline" id="ottomanSkyline">
+    <svg viewBox="0 0 800 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice">
+        <!-- Sol minare -->
+        <rect x="58" y="10" width="10" height="120" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.10)" stroke-width="0.5"/>
+        <polygon points="53,10 73,10 63,0" fill="rgba(201,168,76,0.10)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <rect x="53" y="55" width="20" height="7" rx="1" fill="rgba(201,168,76,0.09)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <!-- Sol küçük kubbe -->
+        <path d="M100,130 L100,95 Q122,72 144,95 L144,130 Z" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.10)" stroke-width="0.5"/>
+        <!-- Sol orta kubbe -->
+        <path d="M140,130 L140,88 Q185,55 230,88 L230,130 Z" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <!-- Merkez büyük kubbe -->
+        <path d="M220,130 L220,75 Q320,10 400,5 Q480,10 580,75 L580,130 Z" fill="rgba(201,168,76,0.09)" stroke="rgba(201,168,76,0.14)" stroke-width="0.5"/>
+        <!-- Merkez hilal -->
+        <text x="400" y="18" text-anchor="middle" font-size="14" fill="rgba(201,168,76,0.35)">☽</text>
+        <!-- Sağ orta kubbe -->
+        <path d="M570,130 L570,88 Q615,55 660,88 L660,130 Z" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <!-- Sağ küçük kubbe -->
+        <path d="M656,130 L656,95 Q678,72 700,95 L700,130 Z" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.10)" stroke-width="0.5"/>
+        <!-- Sağ minare -->
+        <rect x="732" y="10" width="10" height="120" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.10)" stroke-width="0.5"/>
+        <polygon points="727,10 747,10 737,0" fill="rgba(201,168,76,0.10)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <rect x="727" y="55" width="20" height="7" rx="1" fill="rgba(201,168,76,0.09)" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>
+        <!-- Yansıma şeridi (Nil şeridi yerine kırmızı gölge) -->
+        <rect x="0" y="123" width="800" height="7" fill="rgba(139,26,26,0.18)"/>
+        <rect x="0" y="126" width="800" height="4" fill="rgba(139,26,26,0.10)"/>
+    </svg>
+</div>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<button class="floating-btn" id="iletisimBtnFloating" onclick="iletisimGoster()" title="Öğretmene Sor / Hata Bildir"><i class="fa-solid fa-comment-dots"></i></button>
+
+<div class="container">
+
+    <div class="settings-panel" style="display:flex;gap:10px;align-items:center;">
+        <button class="settings-btn uzun-buton hidden" id="btnMuzik" onclick="toggleMuzikPanel()" title="Tarihî Müzik Kutusu"><i class="fa-solid fa-music"></i></button>
+		<button class="settings-btn uzun-buton hidden" id="btnSozluk" onclick="sozlukGoster()" title="Sözlük"><i class="fa-solid fa-book-open"></i> Sözlük</button>
+        <div class="dropdown-menu-container">
+            <button class="settings-btn" id="btnHamburger" onclick="menuToggle(event)" title="Menü" style="position:relative;">
+                <i class="fa-solid fa-bars"></i>
+                <span id="duyuruRozetiGenel" class="notification-badge hidden" style="right:-2px;top:-2px;">!</span>
+            </button>
+            <div class="glass-dropdown" id="hamburgerDropdown">
+                <button class="dropdown-item hidden" id="btnDuyuru" onclick="duyuruGoster()"><i class="fa-solid fa-bell"></i> Duyurular <span id="duyuruRozeti" class="notification-badge hidden" style="position:static;transform:none;display:inline-block;margin-left:5px;">!</span></button>
+                <a href="https://sinema.kirkyama.uk" target="_blank" class="dropdown-item"><i class="fa-solid fa-film"></i> Boğaziçi Sinema</a>
+                <button class="dropdown-item" onclick="rehberGoster()"><i class="fa-solid fa-circle-question"></i> Nasıl Kullanılır?</button>
+                <button class="dropdown-item" onclick="rehberiBaslat()"><i class="fa-solid fa-route"></i> Tanıtım Turu</button>
+                <button class="dropdown-item" onclick="kaynaklarGoster()"><i class="fa-solid fa-book-bookmark"></i> Kaynakça</button>
+                <button class="dropdown-item" id="btnYedek" onclick="yedekleGoster()"><i class="fa-solid fa-gear"></i> Veri Yedeği</button>
+                <button class="dropdown-item" id="sifreDegistirBtn"><i class="fa-solid fa-key"></i> Şifre Değiştir</button>
+                <button class="dropdown-item cikis-btn" onclick="cikisYap()"><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış Yap</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ GİRİŞ EKRANI ═══════════════ -->
+    <div id="girisEkrani">
+        <div class="ott-wrap">
+
+            <!-- Osmanlı motif şeridi -->
+            <div class="ott-ornament">
+                <span>✦</span><span>❧</span><span>☽</span><span>❧</span><span>✦</span>
+            </div>
+
+            <!-- Hilal sembolü -->
+            <div class="ott-crescent">☽</div>
+
+            <!-- Başlık -->
+            <div class="ott-header">
+                <div class="ott-era-tag">Selçuklu · Osmanlı · Bizans</div>
+                <h1 class="ott-title"><span>10. Sınıf</span><br>Tarih Portalı</h1>
+                <p class="ott-school">Özel Batman Boğaziçi Koleji MTAL</p>
+            </div>
+
+            <!-- Ayırıcı -->
+            <div class="ott-hr">
+                <div class="ott-hr-line"></div>
+                <span class="ott-hr-star">✦</span>
+                <div class="ott-hr-line"></div>
+            </div>
+
+            <!-- Giriş kartı -->
+            <div class="ott-card">
+
+                <!-- Sekmeler -->
+                <div class="ott-tabs">
+                    <button class="ott-tab tab-btn active" id="btnOgrenciTab" onclick="girisTuruDegistir('ogrenci')">
+                        ☽ Öğrenci
+                    </button>
+                    <button class="ott-tab tab-btn" id="btnOgretmenTab" onclick="girisTuruDegistir('ogretmen')">
+                        ✦ Zümre
+                    </button>
+                </div>
+
+                <!-- Öğrenci formu -->
+                <div id="ogrenciGirisFormu">
+                    <div class="ott-field">
+                        <label class="ott-label">Adınız Soyadınız</label>
+                        <div class="ott-input-wrap">
+                            <span class="ott-iicon"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="adSoyad" placeholder="Örn: Yunus Dursun" onkeypress="if(event.key==='Enter') girisYap()">
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                        <div class="ott-field" style="margin-bottom:0;">
+                            <label class="ott-label">Sınıfınız</label>
+                            <div class="ott-input-wrap">
+                                <span class="ott-iicon"><i class="fa-solid fa-door-open"></i></span>
+                                <select id="sinif">
+                                    <option value="">Seçiniz</option>
+                                    <option value="10-A">10-A</option>
+                                    <option value="10-B">10-B</option>
+                                    <option value="10-C">10-C</option>
+                                    <option value="10-D">10-D</option>
+                                    <option value="10-E">10-E</option>
+                                    <option value="10-F">10-F</option>
+                                    <option value="10-G">10-G</option>
+                                    <option value="10-H">10-H</option>
+                                </select>
+                                <span class="ott-caret">▾</span>
+                            </div>
+                        </div>
+                        <div class="ott-field" style="margin-bottom:0;">
+                            <label class="ott-label">Numaranız</label>
+                            <div class="ott-input-wrap">
+                                <span class="ott-iicon"><i class="fa-solid fa-hashtag"></i></span>
+                                <input type="number" id="numara" placeholder="Örn: 714" onkeypress="if(event.key==='Enter') girisYap()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ott-field" style="margin-top:14px;">
+                        <label class="ott-label">Sınav Şifresi</label>
+                        <div class="ott-input-wrap">
+                            <span class="ott-iicon"><i class="fa-solid fa-key"></i></span>
+                            <input type="password" id="sifre" placeholder="Şifrenizi girin" onkeypress="if(event.key==='Enter') girisYap()">
+                        </div>
+                    </div>
+                    <button class="ott-btn btn-login" onclick="girisYap()">✦ Giriş Yap ✦</button>
+                    <div class="ott-quote">
+                        "Söylediğin sözün kölesi, söylemediğinin sultanısın."
+                        <cite>— Osmanlı Atasözü</cite>
+                    </div>
+                </div>
+
+                <!-- Öğretmen formu -->
+                <div id="ogretmenGirisFormu" class="hidden">
+                    <div class="ott-field">
+                        <label class="ott-label">Adınız Soyadınız</label>
+                        <div class="ott-input-wrap">
+                            <span class="ott-iicon"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="ogretmenAd" placeholder="Örn: Pelda Aksoy Mutlu" onkeypress="if(event.key==='Enter') ogretmenGirisYap()">
+                        </div>
+                    </div>
+                    <div class="ott-field">
+                        <label class="ott-label">Öğretmen Kodu</label>
+                        <div class="ott-input-wrap">
+                            <span class="ott-iicon"><i class="fa-solid fa-shield-halved"></i></span>
+                            <input type="password" id="vipKodu" placeholder="Öğretmen Kodunuzu Girin" onkeypress="if(event.key==='Enter') ogretmenGirisYap()">
+                        </div>
+                    </div>
+                    <div class="ott-field">
+                        <label class="ott-label">Hesap Şifresi</label>
+                        <div class="ott-input-wrap">
+                            <span class="ott-iicon"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="ogretmenSifre" placeholder="Kendi belirleyeceğiniz şifre" onkeypress="if(event.key==='Enter') ogretmenGirisYap()">
+                        </div>
+                    </div>
+                    <button class="ott-btn" id="btnOgretmenLogin" onclick="ogretmenGirisYap()" style="background:linear-gradient(135deg,#1E2A4A 0%,#2E3F68 100%);">
+                        <i class="fa-solid fa-key"></i>&nbsp; Sistemi Aç
+                    </button>
+                </div>
+
+            </div><!-- /ott-card -->
+
+            <!-- Alt bilgi -->
+            <div class="ott-footer">
+                <p class="ott-footer-text">Boğaziçi Koleji Tarih Portalı <span class="ott-badge">v1.0</span> — Murat Mutlu ✉</p>
+            </div>
+
+        </div><!-- /ott-wrap -->
+    </div><!-- /girisEkrani -->
+
+    <!-- ═══════════════ MENÜ EKRANI ═══════════════ -->
+    <div id="menuEkrani" class="hidden">
+        <h2 style="margin-top:5px;margin-bottom:20px;font-weight:600;color:var(--text-color);font-size:24px;text-align:left;">
+            Hoşgeldin, <span id="kullaniciAdiSpan" style="font-weight:800;color:var(--accent-color);"></span> 👋
+        </h2>
+        <div id="anaKlasorler">
+            <div class="folder-grid">
+                <button class="folder-btn" onclick="odayaGir('u1')">
+                    <div class="icon-wrapper" style="background:rgba(192,57,43,0.1);color:var(--accent-color);"><i class="fa-solid fa-horse"></i></div>
+                    <div class="folder-texts">
+                        <span class="folder-title">1. Ünite</span>
+                        <span class="folder-desc">Türkistan'dan Türkiye'ye (1040-1299)</span>
+                    </div>
+                </button>
+                <button class="folder-btn" onclick="odayaGir('u2')">
+                    <div class="icon-wrapper" style="background:rgba(192,57,43,0.1);color:var(--accent-color);"><i class="fa-solid fa-chess-rook"></i></div>
+                    <div class="folder-texts">
+                        <span class="folder-title">2. Ünite</span>
+                        <span class="folder-desc">Beylikten Devlete Osmanlı (1299-1453)</span>
+                    </div>
+                </button>
+                <button class="folder-btn" onclick="odayaGir('u3')">
+                    <div class="icon-wrapper" style="background:rgba(192,57,43,0.1);color:var(--accent-color);"><i class="fa-solid fa-globe"></i></div>
+                    <div class="folder-texts">
+                        <span class="folder-title">3. Ünite</span>
+                        <span class="folder-desc">Cihan Devleti Osmanlı (1453-1683)</span>
+                    </div>
+                </button>
+            </div>
+            <button class="robot-btn" onclick="robotGoster()">
+                <i class="fa-solid fa-robot"></i> Kendi Sınavını Oluştur (Sınav Robotu)
+            </button>
+            <button class="odev-btn" onclick="odevGoster()" style="background-color:var(--container-bg);color:#2c3e50;cursor:pointer;padding:18px 20px;width:100%;border:2px solid var(--accent-color);text-align:center;outline:none;font-size:16px;transition:0.4s;border-radius:16px;margin-top:15px;font-weight:800;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,0.05);gap:10px;">
+                <i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent-color);"></i> Ödev / Çalışma Gönder
+            </button>
+        </div>
+
+        <div id="sinavOdasi" class="hidden">
+            <button class="back-to-hall-btn" onclick="salonaDon()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect><polyline points="12 16 8 12 12 8"></polyline><line x1="16" y1="12" x2="8" y2="12"></line></svg>
+                Ana Sayfaya Dön
+            </button>
+            <h2 id="odaBasligi" class="room-title">Sınav Odası</h2>
+            <div class="tab-container">
+                <button class="tab-btn active" id="btnTabTestler" onclick="sekmeDegistir('testler')"><i class="fa-solid fa-list-check"></i> Sınavlar ve Testler</button>
+                <button class="tab-btn" id="btnTabMateryaller" onclick="sekmeDegistir('materyaller')"><i class="fa-solid fa-photo-film"></i> Ünite Materyalleri</button>
+            </div>
+            <div id="tabTestler" class="tab-content active">
+                <div class="search-container">
+                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="testArama" class="search-input" placeholder="Ünite sınavı ara (Örn: İskân ve İstimalet)" onkeyup="testAra()">
+                    <button class="search-clear" id="aramaTemizle" onclick="aramaTemizleBtn()" title="Aramayı Temizle"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="konu-slider-wrapper">
+                    <button class="scroll-arrow" onclick="scrollKonu(-1)" title="Sola Kaydır">&laquo;</button>
+                    <div id="konuFiltreleri" class="konu-secici"></div>
+                    <button class="scroll-arrow" onclick="scrollKonu(1)" title="Sağa Kaydır">&raquo;</button>
+                </div>
+                <div id="odaTestleri" class="test-list-container"></div>
+            </div>
+            <div id="tabMateryaller" class="tab-content">
+                <div class="search-container" style="margin-bottom:20px;">
+                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="materyalArama" class="search-input" placeholder="Materyal ara (Örn: Selçuklu, Osmanlı...)" onkeyup="materyalAra()">
+                    <button class="search-clear" id="matAramaTemizle" onclick="matAramaTemizleBtn()" title="Aramayı Temizle"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="materyalKategorileri" class="folder-grid">
+                    <button class="folder-btn" onclick="kategoriSec('Video')">
+                        <div class="icon-wrapper" style="background:rgba(231,76,60,0.1);color:#e74c3c;"><i class="fa-brands fa-youtube"></i></div>
+                        <div class="folder-texts"><span class="folder-title">Video ve Belgeseller</span><span class="folder-desc">Konu anlatımları ve belgeseller</span></div>
+                    </button>
+                    <button class="folder-btn" onclick="kategoriSec('Podcast')">
+                        <div class="icon-wrapper" style="background:rgba(155,89,182,0.1);color:#9b59b6;"><i class="fa-solid fa-podcast"></i></div>
+                        <div class="folder-texts"><span class="folder-title">Tarih Podcastleri</span><span class="folder-desc">Sesli tarih içerikleri</span></div>
+                    </button>
+                    <button class="folder-btn" onclick="kategoriSec('PDF Not')">
+                        <div class="icon-wrapper" style="background:rgba(230,126,34,0.1);color:#e67e22;"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="folder-texts"><span class="folder-title">Ders Notları (PDF)</span><span class="folder-desc">İndirilebilir özetler ve notlar</span></div>
+                    </button>
+                    <button class="folder-btn" onclick="kategoriSec('Sunu')">
+                        <div class="icon-wrapper" style="background:rgba(232,67,147,0.1);color:#e84393;"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div class="folder-texts"><span class="folder-title">Ders Sunuları</span><span class="folder-desc">PowerPoint Sunuları (PDF)</span></div>
+                    </button>
+                    <button class="folder-btn" onclick="kategoriSec('İnteraktif Harita')">
+                        <div class="icon-wrapper" style="background:rgba(46,204,113,0.1);color:#2ecc71;"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div class="folder-texts"><span class="folder-title">İnteraktif Haritalar</span><span class="folder-desc">Dijital tarih haritaları</span></div>
+                    </button>
+                    <button class="folder-btn" onclick="kategoriSec('Flashcard')">
+                        <div class="icon-wrapper" style="background:rgba(52,152,219,0.1);color:#3498db;"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="folder-texts"><span class="folder-title">Kavram Kartları</span><span class="folder-desc">Önemli terimleri tekrar et</span></div>
+                    </button>
+                    <button class="folder-btn long-game-btn" onclick="kategoriSec('Oyunlar')" style="grid-column: 1 / -1; margin-top: 10px; background: linear-gradient(135deg, #1abc9c, #16a085); border-color: #1abc9c; padding: 20px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 20px;">
+                        <div class="icon-wrapper" style="background: rgba(255, 255, 255, 0.2); color: white; width: 60px; height: 60px; font-size: 28px;">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div> 
+                        <div class="folder-texts" style="text-align: left;">
+                            <span class="folder-title" style="color: white; font-size: 22px;">Eğitici Oyunlar</span>
+                            <span class="folder-desc" style="color: rgba(255, 255, 255, 0.9); font-size: 15px;">Ünite konularını oyunlarla, eğlenerek pekiştirin!</span>
+                        </div>
+                    </button>
+                </div>
+                <div id="materyalListesiAlani" class="hidden">
+                    <button class="back-to-hall-btn" onclick="kategorilereDon()" style="margin-bottom:20px;background:var(--container-bg);border:2px solid var(--card-border);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Kategorilere Dön
+                    </button>
+                    <div class="material-grid" id="odaMateryalleri"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modern-footer">
+            <div class="footer-left">
+                <span><strong>Boğaziçi Koleji Tarih Portalı</strong></span>
+                <span class="version-badge">v1.0</span>
+            </div>
+            <div class="footer-right">
+                <span>Tasarım ve Kodlama: Murat Mutlu, Tarih Öğretmeni</span>
+                <a href="/cdn-cgi/l/email-protection#026f7770637642696b70697b636f632c7769" class="footer-mail-btn" title="Öğretmene E-Posta Gönder"><i class="fa-solid fa-envelope"></i></a>
+<a href="https://kirkyama.uk/" target="_blank" title="kırkyama">
+    <img src="https://depo.kirkyama.uk/k%C4%B1rkyama%20pe%C3%A7.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; vertical-align: middle; margin-left: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ TEST EKRANI ═══ -->
+    <div id="testEkrani" class="hidden">
+        <div class="sticky-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <button onclick="testtenCik()" class="action-btn back-btn" style="padding:8px 16px;margin:0;font-size:14px;min-width:auto;border-radius:12px;display:inline-flex;align-items:center;gap:6px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect><polyline points="12 16 8 12 12 8"></polyline><line x1="16" y1="12" x2="8" y2="12"></line></svg>
+                        Geri
+                    </button>
+                    <button onclick="window.print()" class="action-btn back-btn" style="padding:8px 16px;margin:0;font-size:14px;min-width:auto;border-radius:12px;display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-print"></i></button>
+                    <h3 id="testBaslik" style="margin:0;text-align:left;font-size:18px;">Sınav</h3>
+                </div>
+                <div class="timer-box" id="sayac" style="margin-bottom:0;">00:00</div>
+            </div>
+            <div class="nav-map" id="navMap"></div>
+        </div>
+        <div id="sorularAlani" style="margin-top:25px;"></div>
+        <button class="action-btn btn-center" onclick="ozetGoster()">Sınavı Bitir ve Gönder</button>
+    </div>
+
+    <!-- ═══ SONUÇ EKRANI ═══ -->
+    <div id="sonucEkrani" class="hidden">
+        <h2 style="text-align:center;font-size:28px;">Sınav Tamamlandı!</h2>
+        <div id="puanKutusu" style="text-align:center;display:none;padding:20px 0;">
+            <div style="font-size:60px;color:#27ae60;font-weight:800;letter-spacing:-2px;" id="puanGostergesi"></div>
+            <div id="ozelMotivasyonKutusu" style="text-align:center;margin-top:15px;font-weight:700;font-size:20px;padding:15px;border-radius:12px;background:var(--option-hover);"></div>
+        </div>
+        <div id="klasikMesaj" style="text-align:center;display:none;padding:30px 15px;background:var(--option-hover);border-radius:16px;margin-bottom:20px;">
+            <h3 style="color:#27ae60;font-size:24px;margin-top:0;"><i class="fa-solid fa-check-double"></i> Cevaplarınız Kaydedildi</h3>
+            <p style="font-size:16px;">Öğretmeniniz değerlendirdikten sonra notunuzu açıklayacaktır.</p>
+        </div>
+        <div style="background:var(--option-hover);border:2px solid var(--card-border);padding:15px;margin:25px 0;border-radius:12px;text-align:center;font-size:15px;">
+            <span id="bitirmeSuresi" style="font-weight:700;"></span> |
+            <span id="ihlalSayisi" style="color:#e74c3c;font-weight:700;"></span>
+        </div>
+        <div id="detayliCozumler"></div>
+        <button class="action-btn back-btn btn-center" style="display:flex;align-items:center;justify-content:center;gap:8px;" onclick="anasayfayaDon()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect><polyline points="12 16 8 12 12 8"></polyline><line x1="16" y1="12" x2="8" y2="12"></line></svg>
+            Ana Sayfaya Dön
+        </button>
+    </div>
+
+    <!-- ═══ MODALLAR ═══ -->
+    <div id="robotModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid #34495e;max-width:500px;">
+            <h3 style="color:var(--text-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-robot" style="color:#34495e;"></i> Sınav Robotu</h3>
+            <p style="font-size:15px;color:var(--text-color);opacity:0.8;margin-bottom:25px;">İstediğiniz ünite ve konudan rastgele seçilecek sorularla kendi deneme sınavınızı oluşturun.</p>
+            <div style="text-align:left;margin-bottom:15px;">
+                <label style="display:block;margin-bottom:8px;font-weight:600;color:var(--text-color);font-size:14px;">Ünite Seçimi:</label>
+                <select id="robotUnite" onchange="robotKonuGuncelle()" style="width:100%;padding:14px;border-radius:12px;border:2px solid var(--card-border);background:var(--option-hover);color:var(--text-color);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.3s;font-size:15px;">
+                    <option value="tumu">Tüm Ünitelerden Karma</option>
+                </select>
+            </div>
+            <div style="text-align:left;margin-bottom:15px;">
+                <label style="display:block;margin-bottom:8px;font-weight:600;color:var(--text-color);font-size:14px;">Konu Seçimi:</label>
+                <select id="robotKonu" style="width:100%;padding:14px;border-radius:12px;border:2px solid var(--card-border);background:var(--option-hover);color:var(--text-color);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.3s;font-size:15px;">
+                    <option value="tumu">Tüm Konulardan Karma</option>
+                </select>
+            </div>
+            <div style="text-align:left;margin-bottom:25px;">
+                <label style="display:block;margin-bottom:8px;font-weight:600;color:var(--text-color);font-size:14px;">Soru Sayısı:</label>
+                <select id="robotSoruSayisi" style="width:100%;padding:14px;border-radius:12px;border:2px solid var(--card-border);background:var(--option-hover);color:var(--text-color);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.3s;font-size:15px;">
+                    <option value="10">10 Soru (Hızlı Tekrar)</option>
+                    <option value="15" selected>15 Soru (İdeal Deneme)</option>
+                    <option value="20">20 Soru (Detaylı Tarama)</option>
+                    <option value="25">25 Soru (Büyük Sınav)</option>
+                </select>
+            </div>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="robotKapat()" style="margin-top:0;">İptal</button>
+                <button class="action-btn" style="background-color:#34495e;margin-top:0;box-shadow:0 4px 15px rgba(52,73,94,0.3);" onclick="robotSinavBaslat()"><i class="fa-solid fa-play"></i> Sınavı Başlat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="yedekModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid var(--accent-color);max-width:500px;">
+            <h3 style="color:var(--text-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-gear"></i> Veri Yedeği</h3>
+            <p style="font-size:15px;color:var(--text-color);opacity:0.8;margin-bottom:25px;">Çözdüğünüz sınavları ve profil bilgilerinizi yedekleyebilir veya başka bir cihazdan yükleyebilirsiniz.</p>
+            <div style="display:flex;flex-direction:column;gap:15px;">
+                <button class="action-btn" style="margin-top:0;display:flex;align-items:center;justify-content:center;gap:10px;" onclick="verileriIndir()"><i class="fa-solid fa-download"></i> Verilerimi İndir (Yedekle)</button>
+                <label class="action-btn back-btn" style="margin-top:0;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;">
+                    <i class="fa-solid fa-upload"></i> Yedek Yükle
+                    <input type="file" id="yedekDosya" style="display:none;" accept=".json" onchange="veriYukle(event)">
+                </label>
+            </div>
+            <div class="modal-btn-group" style="margin-top:25px;">
+                <button class="action-btn back-btn" onclick="yedekleKapat()" style="margin-top:0;width:100%;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="sozlukModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid var(--accent-color);max-width:600px;">
+            <h3 style="color:var(--accent-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-book-open"></i> Tarihi Kavramlar</h3>
+            <input type="text" id="sozlukArama" placeholder="Kavram ara... (Örn: Tımar, Devşirme)" onkeyup="kavramAra()" style="margin-bottom:20px;">
+            <div id="kavramListesi" style="max-height:40vh;overflow-y:auto;background:var(--option-hover);border-radius:12px;border:2px solid var(--card-border);"></div>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="sozlukKapat()" style="margin-top:0;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="kaynaklarModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid var(--accent-color);max-width:650px;">
+            <h3 style="color:var(--accent-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-book-bookmark"></i> Bibliyografya</h3>
+            <p style="font-size:14px;color:var(--text-color);opacity:0.8;margin-bottom:20px;">
+                Bu portalda yer alan içerikler, aşağıdaki akademik ve bilimsel kaynaklardan yararlanılarak hazırlanmıştır. <br>
+                İncelemek istediğiniz kaynağı PDF formatında almak için <a href="mailto:murat@kirkyama.uk" style="color:inherit; text-decoration: underline;">murat@kirkyama.uk</a> adresine isim, soyisim ve gerekçenizi belirten kısa bir mail gönderiniz.
+            </p>
+            <div id="kaynakListesiAlani" style="max-height:45vh;overflow-y:auto;background:var(--option-hover);border-radius:12px;border:2px solid var(--card-border);padding:5px;text-align:left;"></div>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="kaynaklarKapat()" style="margin-top:0;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="ozetModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:var(--text-color);font-size:22px;margin-bottom:20px;">Sınav Özeti</h3>
+            <div id="modalIcerik"></div>
+            <div class="modal-btn-group" style="margin-top:30px;">
+                <button class="action-btn back-btn" onclick="modalKapat()" style="margin-top:0;">Geri Dön</button>
+                <button class="action-btn" onclick="testiBitir()" style="margin-top:0;">Evet, Bitir</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="iletisimModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid var(--accent-color);">
+            <h3 style="color:var(--accent-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-comment-dots"></i> Öğretmene İlet</h3>
+            <p style="font-size:15px;color:var(--text-color);opacity:0.8;margin-bottom:20px;">Anlamadığın bir soruyu veya sistemde gördüğün bir hatayı buradan yazabilirsin. Diğer her şey için <a href="mailto:murat@kirkyama.uk" style="color:inherit; text-decoration: underline;">murat@kirkyama.uk</a> adresine mail atabilirsin.</p>
+            <textarea id="ogrenciMesaji" placeholder="Mesajınızı buraya yazınız..."></textarea>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="iletisimKapat()" style="margin-top:0;">İptal</button>
+                <button class="action-btn" style="background-color:var(--accent-color);margin-top:0;box-shadow:0 4px 15px rgba(192,57,43,0.3);" onclick="mesajGonder()">Gönder</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="duyuruModal" class="modal">
+        <div class="modal-content" style="border-top: 6px solid #f39c12;">
+            <h3 style="color:#f39c12; margin-top:0; font-size:22px;"><i class="fa-solid fa-thumbtack"></i> Genel Bilgilendirme</h3>
+            <div style="font-size:15px; color:var(--text-color); line-height:1.7; text-align:left; padding: 10px 0;">
+                <p style="margin-bottom: 12px; font-weight: 600;">Sevgili öğrencilerim;</p>
+                <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <li>Portalın bazı kısımları yeni müfredat doğrultusunda hala güncellenmektedir. Bu nedenle nadir de olsa bazı hatalar ile karşılaşabilirsiniz. Bu hataları bana sol alt köşedeki "Hata Bildir" butonu ile bildirebilirsiniz.</li>
+                    <li>Açılmayan PDF'ler genellikle PDF görüntüleyicisinden kaynaklıdır. Okumak için "İndir" butonunu kullanabilirsiniz. PDF sekmesinin açılmaması halinde sayfayı yenilemeniz gerekmektedir.</li>
+                    <li> Ders çalışırken ya da dinlenirken sizin için inşa edilen <strong>portal radyonuzu</strong> dinleyebilirsiniz. Başarılar dilerim!</li>
+                </ul>
+                <p style="text-align: right; margin-top: 15px; font-weight: 700; color: var(--accent-color);">Murat Mutlu</p>
+            </div>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="duyuruKapat()" style="margin-top:0; width:100%;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rehberModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid var(--accent-color);max-width:550px;">
+            <h3 style="color:var(--accent-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-book-open"></i> Nasıl Kullanılır?</h3>
+            <div style="text-align:left;margin-top:20px;">
+                <div style="display:flex;gap:15px;margin-bottom:15px;align-items:flex-start;">
+                    <div style="width:35px;height:35px;border-radius:50%;background:var(--accent-color);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:bold;">1</div>
+                    <div><h4 style="margin:0 0 5px 0;color:var(--text-color);">İçerikleri Keşfet</h4><p style="margin:0;font-size:14px;opacity:0.8;color:var(--text-color);">Ünite klasörlerine girerek konu özetlerini, testleri ve interaktif materyalleri inceleyebilirsin.</p></div>
+                </div>
+                <div style="display:flex;gap:15px;margin-bottom:15px;align-items:flex-start;">
+                    <div style="width:35px;height:35px;border-radius:50%;background:#e67e22;color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:bold;">2</div>
+                    <div><h4 style="margin:0 0 5px 0;color:var(--text-color);">Sınav Robotu</h4><p style="margin:0;font-size:14px;opacity:0.8;color:var(--text-color);">İstediğin konulardan rastgele deneme sınavları oluşturup kendini test edebilirsin.</p></div>
+                </div>
+                <div style="display:flex;gap:15px;margin-bottom:15px;align-items:flex-start;">
+                    <div style="width:35px;height:35px;border-radius:50%;background:#2ecc71;color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:bold;">3</div>
+                    <div><h4 style="margin:0 0 5px 0;color:var(--text-color);">Ödev Gönder</h4><p style="margin:0;font-size:14px;opacity:0.8;color:var(--text-color);">Defterinin veya çözdüğün testlerin fotoğrafını çekip doğrudan öğretmenine gönderebilirsin.</p></div>
+                </div>
+            </div>
+            <div class="modal-btn-group" style="margin-top:25px;">
+                <button class="action-btn back-btn" onclick="rehberKapat()" style="margin-top:0;width:100%;">Anladım, Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="flashcardModal" class="flashcard-modal">
+        <div class="fc-close" onclick="fcKapat()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcardElement" onclick="fcCevir()">
+                <div class="flashcard-face flashcard-front">
+                    <i class="fa-solid fa-lightbulb" style="font-size:30px;margin-bottom:20px;opacity:0.8;"></i>
+                    <div class="flashcard-term" id="fcTerm">Kavram Adı</div>
+                    <div class="fc-hint">Çevirmek için dokun</div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <div class="flashcard-def" id="fcDef">Açıklama burada yazacak.</div>
+                </div>
+            </div>
+            <div class="flashcard-controls">
+                <button class="fc-btn" onclick="fcGeri()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="fc-counter" id="fcCounter">1 / 10</div>
+                <button class="fc-btn" onclick="fcIleri()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="sifreModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid #27ae60;max-width:400px;">
+            <h3 style="color:var(--text-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-key" style="color:#27ae60;"></i> Şifre Değiştir</h3>
+            <p style="font-size:14px;color:var(--text-color);opacity:0.8;margin-bottom:20px;">Mevcut şifrenizle giriş yaparak yeni şifrenizi belirleyebilirsiniz.</p>
+            <div style="text-align:left;margin-bottom:15px;">
+                <label style="display:block;margin-bottom:5px;font-weight:600;color:var(--text-color);font-size:14px;">Mevcut Şifreniz:</label>
+                <input type="password" id="eskiSifre" placeholder="Şu anki şifreniz" style="width:100%;padding:14px;border:2px solid var(--card-border);background:var(--option-hover);color:var(--text-color);border-radius:12px;font-size:15px;outline:none;font-family:'Inter',sans-serif;">
+            </div>
+            <div style="text-align:left;margin-bottom:20px;">
+                <label style="display:block;margin-bottom:5px;font-weight:600;color:var(--text-color);font-size:14px;">Yeni Şifreniz:</label>
+                <input type="password" id="yeniSifre" placeholder="Yeni belirlediğiniz şifre" style="width:100%;padding:14px;border:2px solid var(--card-border);background:var(--option-hover);color:var(--text-color);border-radius:12px;font-size:15px;outline:none;font-family:'Inter',sans-serif;">
+            </div>
+            <div id="sifreMesaj" style="margin-bottom:15px;font-weight:bold;font-size:14px;text-align:center;min-height:20px;"></div>
+            <div class="modal-btn-group">
+                <button class="action-btn back-btn" onclick="sifreKapat()" style="margin-top:0;">İptal</button>
+                <button class="action-btn" id="sifreKaydetBtn" style="background-color:#27ae60;margin-top:0;box-shadow:0 4px 15px rgba(39,174,96,0.3);">Şifreyi Güncelle</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="odevModal" class="modal">
+        <div class="modal-content" style="border-top:6px solid #27ae60;max-width:500px;">
+            <h3 style="color:var(--text-color);margin-top:0;font-size:22px;"><i class="fa-solid fa-cloud-arrow-up" style="color:#27ae60;"></i> Ödev Yükle</h3>
+            <p style="font-size:14px;color:var(--text-color);opacity:0.8;margin-bottom:20px;">Defterinizin veya ödevinizin fotoğraflarını / PDF'ini buradan yükleyebilirsiniz (Maksimum 10 dosya).</p>
+            <input type="file" id="dosyaSecici" multiple accept="image/*,application/pdf" style="display:none;" onchange="dosyalariHazirla(event)">
+            <div class="upload-area" onclick="document.getElementById('dosyaSecici').click()">
+                <i class="fa-solid fa-images" style="font-size:32px;color:#27ae60;margin-bottom:10px;"></i>
+                <div style="font-weight:bold;color:var(--text-color);">Dosyaları Seçmek İçin Tıklayın</div>
+                <div style="font-size:12px;opacity:0.7;margin-top:5px;">veya galerinizden birden fazla fotoğraf seçin.</div>
+            </div>
+            <div class="file-list" id="secilenDosyalarListesi"></div>
+            <div id="genelYuklemeDurumu" style="font-weight:bold;font-size:14px;text-align:center;color:#27ae60;display:none;">0 / 0 Yüklendi</div>
+            <div class="progress-bar-bg" id="yuklemeBariBg"><div class="progress-bar-fill" id="yuklemeBariFill"></div></div>
+            <div class="modal-btn-group" style="margin-top:20px;">
+                <button class="action-btn back-btn" id="odevIptalBtn" onclick="odevKapat()" style="margin-top:0;">İptal</button>
+                <button class="action-btn" id="odevGonderBtn" style="background-color:#27ae60;margin-top:0;box-shadow:0 4px 15px rgba(39,174,96,0.3);" onclick="odevleriGonder()" disabled>Gönder</button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+<div id="muzikPanel" class="muzik-panel">
+        <div class="muzik-panel-header">
+            <h3><i class="fa-solid fa-compact-disc fa-spin" style="margin-right: 8px; color: var(--accent-color);"></i>portal player v.ı</h3>
+            <button class="muzik-kapat-btn" onclick="toggleMuzikPanel()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="muzik-liste-container" id="muzikListeContainer"></div>
+<!-- ZARİF VE YAPIŞKAN (STICKY) ŞERİT PLAYER -->
+        <div style="position: sticky; bottom: 0; left: 0; width: 100%; background: var(--container-bg); backdrop-filter: blur(12px); border-top: 1px solid var(--card-border); padding: 10px 15px; display: flex; flex-direction: column; gap: 8px; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); border-radius: 0 0 12px 12px;">
+            
+            <!-- Üst Kısım: Şarkı Bilgisi (Sol) ve Butonlar (Sağ) Yan Yana -->
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                
+                <!-- Şarkı Bilgisi -->
+                <div style="display: flex; flex-direction: column; overflow: hidden; white-space: nowrap; max-width: 55%;">
+                    <span id="calanSarkiBaslik" style="font-weight: 700; font-size: 14px; color: var(--accent-color); text-overflow: ellipsis; overflow: hidden;">Şarkı Seçilmedi</span>
+                    <span id="calanSarkiSanatci" style="font-size: 11.5px; color: var(--text-color); opacity: 0.6; text-overflow: ellipsis; overflow: hidden; margin-top: 2px;">Bekleniyor...</span>
+                    <button onclick="acKaraoke()" style="background:var(--accent-color); color:#000; border:none; padding:4px 8px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:11px; margin-top:6px; align-self:flex-start; display:flex; align-items:center; gap:5px; box-shadow:0 2px 5px rgba(201,168,76,0.4);"><i class="fa-solid fa-microphone-lines"></i> Sözleri Takip Et</button>
+                </div>
+
+                <!-- Oynatma Kontrolleri -->
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button onclick="oncekiSarki()" style="background: transparent; border: none; color: var(--text-color); opacity: 0.8; font-size: 16px; cursor: pointer; padding: 0; outline: none;"><i class="fa-solid fa-backward-step"></i></button>
+                    
+                    <button id="muzikPlayBtn" onclick="toggleMuzikPlay()" style="background: var(--accent-color); border: none; color: #0D1117; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; box-shadow: 0 2px 8px rgba(201,168,76,0.3); outline: none;">
+                        <i class="fa-solid fa-play" style="margin-left: 2px;"></i>
+                    </button>
+                    
+                    <button onclick="sonrakiSarki()" style="background: transparent; border: none; color: var(--text-color); opacity: 0.8; font-size: 16px; cursor: pointer; padding: 0; outline: none;"><i class="fa-solid fa-forward-step"></i></button>
+                </div>
+            </div>
+
+            <!-- Alt Kısım: İnce İlerleme Çubuğu -->
+            <div id="muzikProgressBg" onclick="seekMuzik(event)" style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; position: relative;">
+                <div id="muzikProgressFill" style="width: 0%; height: 100%; background: var(--accent-color); border-radius: 4px; transition: width 0.15s linear;"></div>
+            </div>
+
+            <!-- Gizli Ses Motoru -->
+            <audio id="muzikAudio" ontimeupdate="updateMuzikProgress()" onended="sonrakiSarki()"></audio>
+        </div>
+    </div>
+<!-- Audio Player -->
+<div id="audioPlayerContainer" class="bottom-audio-bar">
+    <div class="progress-bar-custom" id="progressBarBg" onclick="seekAudio(event)">
+        <div class="progress-fill" id="progressBarFill"></div>
+    </div>
+    <div class="bottom-bar-content">
+        <div class="player-info-custom">
+            <div class="player-icon-custom" id="podcastIconBox"><i class="fa-solid fa-podcast"></i></div>
+            <div class="player-text-custom">
+                <span id="playerTitle" class="player-title-custom">Podcast Başlığı</span>
+                <span class="player-subtitle-custom">Özel Batman Boğaziçi Koleji</span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button class="ctrl-btn" onclick="skipAudio(-15)" title="15 Saniye Geri"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="ctrl-btn play-btn" id="playPauseBtn" onclick="togglePlay()"><i class="fa-solid fa-play" style="margin-left: 2px;"></i></button>
+            <button class="ctrl-btn" onclick="skipAudio(15)" title="15 Saniye İleri"><i class="fa-solid fa-rotate-right"></i></button>
+        </div>
+        <div class="player-right-actions">
+            <div class="time-display">
+                <span id="currentTimeDisplay">00:00</span> <span style="opacity:0.5; margin:0 3px;">/</span> <span id="durationDisplay">00:00</span>
+            </div>
+            <button class="ctrl-btn close-btn" onclick="kapatPlayer()" title="Kapat"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+    <audio id="mainAudio" src="" ontimeupdate="updateProgress()" onloadedmetadata="setDuration()" onended="audioEnded()"></audio>
+</div>
+
+<div id="inlineVideoContainer" class="hidden" style="width:100%;margin-top:15px;margin-bottom:5px;border-radius:12px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,0.1);border:2px solid var(--accent-color);background:#000;animation:fadeIn 0.4s ease;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:var(--accent-color);color:#fff;">
+        <h3 id="inlineVideoBaslik" style="margin:0;font-size:15px;color:#fff;font-weight:700;text-align:left;">Video</h3>
+        <button onclick="videoKapat()" style="background:transparent;border:none;color:#fff;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;" title="Kapat"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="plyr__video-embed" id="player">
+        <iframe id="youtubeIframe" src="" allowfullscreen allowtransparency allow="autoplay"></iframe>
+    </div>
+</div>
+
+<div id="inlinePdfContainer" class="hidden" style="width: 100%; margin-top: 15px; margin-bottom: 5px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.5); border: 1px solid var(--card-border); background: var(--container-bg); animation: fadeIn 0.4s ease; display: flex; flex-direction: column;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(13,17,23,0.95); border-bottom: 1px solid var(--card-border); color: var(--accent-color); flex-shrink: 0; flex-wrap: wrap; gap: 10px;">
+        <h3 id="inlinePdfBaslik" style="margin: 0; font-size: 15px; color: var(--accent-color); font-weight: 700; text-align: left; flex: 1; min-width: 150px;">Doküman</h3>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <button onclick="onPdfPrev()" style="background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: 0.2s;"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="pdfPageInfo" style="font-size: 13px; font-weight: 600; min-width: 45px; text-align: center;">1 / 1</span>
+            <button onclick="onPdfNext()" style="background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: 0.2s;"><i class="fa-solid fa-chevron-right"></i></button>
+            <button onclick="onPdfZoomIn()" style="background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; cursor: pointer; margin-left: 5px; transition: 0.2s;"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button onclick="onPdfZoomOut()" style="background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: 0.2s;"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+            
+            <a id="pdfNewTabBtn" href="#" target="_blank" style="background: rgba(52, 152, 219, 0.2); border: 1px solid rgba(52, 152, 219, 0.5); color: #3498db; padding: 4px 10px; border-radius: 6px; cursor: pointer; margin-left: 5px; transition: 0.2s; text-decoration: none; display: flex; align-items: center; justify-content: center;" title="Yeni Sekmede Tam Ekran Aç" onmouseover="this.style.background='rgba(52, 152, 219, 0.4)'" onmouseout="this.style.background='rgba(52, 152, 219, 0.2)'"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a id="pdfDownloadBtn" href="#" target="_blank" download style="background: rgba(139, 26, 26, 0.2); border: 1px solid rgba(139, 26, 26, 0.5); color: #A83232; padding: 4px 10px; border-radius: 6px; cursor: pointer; margin-left: 5px; transition: 0.2s; text-decoration: none; display: flex; align-items: center; justify-content: center;" title="PDF'yi İndir" onmouseover="this.style.background='rgba(139, 26, 26, 0.4)'" onmouseout="this.style.background='rgba(139, 26, 26, 0.2)'"><i class="fa-solid fa-download"></i></a>
+            
+            <button onclick="pdfKapat()" style="background: transparent; border: none; color: var(--accent-color); cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; margin-left: 5px;" title="Kapat"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+    <div id="pdfRenderArea" style="width: 100%; height: 75vh; min-height: 520px; overflow: auto; display: flex; justify-content: center; background: #ffffff; position: relative;">
+        <canvas id="pdfCanvas" style="box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%; height: auto;"></canvas>
+    </div>
+</div>
+
+<!-- Harita modal (opsiyonel) -->
+<div id="haritaModal" class="oyun-tam-ekran hidden" style="background:#111; z-index: 10000;">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <div class="oyun-ust-bar" style="border-bottom: 1px solid rgba(255,255,255,0.1); background: #1a1a1a;">
+        <h3 id="haritaModalBaslik" style="margin:0; font-size:18px; color:white;"><i class="fa-solid fa-map-location-dot"></i> Harita</h3>
+        <button onclick="haritaKapat()" class="oyun-kapat-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; position:relative;">
+        <div id="mapCanvas" style="flex:1; width:100%; background:#000;"></div>
+        <div id="mapControlsContainer" style="padding:15px; background:rgba(0,0,0,0.9); border-top:1px solid #333; color:white; display:none; text-align:center; max-height: 30vh; overflow-y: auto;"></div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+<!-- Soru veritabanları -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="muzik_verisi.js?v=1.2"></script>
+<script src="sinif10sorular/menu_verisi.js"></script>
+<script src="sinif10sorular/u1_askeri.js"></script>
+<script src="sinif10sorular/u1_teskilat.js"></script>
+<script src="sinif10sorular/u1_sosyoekonomik.js"></script>
+<script src="sinif10sorular/u1_bilim.js"></script>
+<script src="sinif10sorular/u1_genel.js"></script>
+<script src="sinif10sorular/u2_kurulus.js"></script>
+<script src="sinif10sorular/u2_siyasi.js"></script>
+<script src="sinif10sorular/u2_sistem.js"></script>
+<script src="sinif10sorular/u2_iskan.js"></script>
+<script src="sinif10sorular/u2_ilim.js"></script>
+<script src="sinif10sorular/u2_genel.js"></script>
+<script src="sinif10sorular/u3_cihan.js"></script>
+<script src="sinif10sorular/sinif10haritalar.js"></script>
+<script src="motorlar/motor_sinif10.js?v=1.1"></script>
+<script src="sinif10sorular/s10kavramlar.js"></script>
+<script src="sinif10sorular/s10kaynak.js"></script>
+
+<!-- Osmanlı Tema Başlatıcı -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const giris      = document.getElementById('girisEkrani');
+    const menu       = document.getElementById('menuEkrani');
+    const sinavOdasi = document.getElementById('sinavOdasi');
+    const testEkrani = document.getElementById('testEkrani');
+    const sonucEkrani= document.getElementById('sonucEkrani');
+    const container  = document.querySelector('.container');
+
+    function checkThemeMode() {
+        const isGiris = !giris.classList.contains('hidden');
+        const isSinav = !sinavOdasi.classList.contains('hidden');
+        const isTest  = !testEkrani.classList.contains('hidden');
+        const isSonuc = !sonucEkrani.classList.contains('hidden');
+
+        document.body.classList.add('ottoman-theme');
+
+        if (isGiris) container.classList.add('login-mode');
+        else         container.classList.remove('login-mode');
+
+        if (isSinav || isTest || isSonuc) document.body.classList.add('focus-mode');
+        else                              document.body.classList.remove('focus-mode');
+    }
+
+    checkThemeMode();
+
+    const observer = new MutationObserver(checkThemeMode);
+    [giris, menu, sinavOdasi, testEkrani, sonucEkrani].forEach(el => {
+        if (el) observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    // Yıldız efekti (tema-5 ile aynı)
+    const sf = document.getElementById('ottomanStarfield');
+    if (sf) {
+        for (let i = 0; i < 70; i++) {
+            const s = document.createElement('div');
+            s.className = 'ottoman-star';
+            const size = Math.random() * 2 + 1;
+            s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*70}%;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*3}s;`;
+            sf.appendChild(s);
+        }
+    }
+});
+</script>
+
+
+<!-- KARAOKE EKRANI MODALI -->
+<div id="karaokeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.90); z-index:99999; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; backdrop-filter: blur(10px);">
+    <button onclick="kapatKaraoke()" style="position:absolute; top:30px; right:40px; background:none; border:none; color:white; font-size:35px; cursor:pointer; opacity:0.7; transition:0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div style="margin-bottom:40px; text-align:center;">
+        <h2 id="karaokeBaslik" style="color:var(--accent-color); margin:0; font-size:36px; text-shadow:0 0 15px rgba(201,168,76,0.3);">Şarkı Başlığı</h2>
+        <h4 id="karaokeSanatci" style="color:#aaa; margin:10px 0 0 0; font-size:20px; font-weight:400;">Sanatçı</h4>
+    </div>
+    
+    <div id="karaokeContainer" style="width:100%; max-width:800px; height:65vh; overflow-y:auto; scroll-behavior:smooth; text-align:center; position:relative; padding-bottom:50vh; padding-top:20vh; mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);">
+        <!-- LRC satırları JS ile buraya gelecek -->
+    </div>
+</div>
+
+
+<!-- ═══ İNTERAKTİF KULLANIM REHBERİ ═══ -->
+<div id="rehber-overlay"></div>
+<div id="rehber-kutusu" role="dialog" aria-live="polite">
+    <div class="rehber-ust"><span id="rehber-sayac"></span><button type="button" id="rehber-atla">Atla</button></div>
+    <p id="rehber-metin"></p>
+    <button type="button" id="rehber-ileri">İleri</button>
+</div>
+<script src="motorlar/kilit_verisi.js?v=2.1"></script>
+<script src="motorlar/unite-kilit.js?v=2.1"></script>
+<script src="motorlar/rehber.js"></script>
+<script src="motorlar/dinamik-url.js"></script>
+
+</body>
+</html>
+
+

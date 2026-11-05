@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Oyun Bölümü — Tarih Portalı</title>
+<link rel="icon" type="image/png" href="https://depo.kirkyama.uk/favicon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="stiller/oyunlar.css">
+</head>
+<body>
+
+<!-- MOBİL TAM EKRAN ODAK ÇUBUĞU -->
+<div id="mobileFullscreenBar" class="mobile-fs-bar">
+    <button class="mobile-fs-btn" onclick="exitMobileFullscreen()">
+        <i class="fa-solid fa-arrow-left"></i> <span>Oyun Menüsü</span>
+    </button>
+    <div class="mobile-fs-title" id="mobileFsTitle">Oyun</div>
+    <button class="mobile-fs-btn close" onclick="exitMobileFullscreen()" title="Tam Ekrandan Çık">
+        <i class="fa-solid fa-compress"></i>
+    </button>
+</div>
+
+<!-- KULLANICI PROFİL BUTONU (SAĞ ÜST KÖŞE) -->
+<div id="userProfileWidget" class="user-profile-widget">
+    <div id="userProfileBtn" class="user-avatar-ring guest" onclick="handleProfileClick()" title="Giriş Yap / Profilim">
+        <div class="user-avatar-inner" id="userAvatarInner">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
+
+    <!-- Profil Açılır Kartı (Giriş Yapıldığında) -->
+    <div id="userProfileDropdown" class="user-profile-dropdown">
+        <div class="up-header">
+            <div class="user-avatar-ring up-avatar-large" id="upDropdownRing">
+                <div class="user-avatar-inner" id="upDropdownAvatar">?</div>
+            </div>
+            <div class="up-info">
+                <div class="up-name" id="upDropdownName">Misafir Öğrenci</div>
+                <div class="up-role"><i class="fa-solid fa-shield-halved"></i> Tarih Kaşifi</div>
+            </div>
+        </div>
+        
+        <div class="up-stats" id="upDropdownStats">
+            <!-- Otomatik Doldurulacak -->
+        </div>
+
+        <div class="up-actions">
+            <button type="button" class="up-btn backup" onclick="exportData()"><i class="fa-solid fa-cloud-arrow-down"></i> Verilerimi İndir</button>
+            <button type="button" class="up-btn restore" onclick="triggerImportFile()"><i class="fa-solid fa-cloud-arrow-up"></i> Veri Dosyası Yükle</button>
+            <button type="button" class="up-btn logout" onclick="logoutUser()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</button>
+        </div>
+    </div>
+</div>
+
+<div class="header">
+    <a href="index.html" style="color: var(--muted); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;"><i class="fa-solid fa-arrow-left"></i> Portala Dön</a>
+    <span class="ph-eyebrow">Ders Dışı </span>
+    <h1 class="ph-title">Oyunlar</h1>
+</div>
+
+<!-- ANA KATEGORİ SEÇİMİ -->
+<div class="master-categories">
+        <button class="master-btn" id="btn-cat-mini" onclick="toggleCategory('mini')" style="background: rgba(0,0,0,0.05);">
+            <i class="fa-solid fa-gamepad" style="font-size: 1.5rem; margin-bottom: 5px;"></i><br>
+            Mini Oyunlar
+        </button>
+
+        <button class="master-btn" id="btn-cat-gamesnroll" onclick="toggleCategory('gamesnroll')">
+            <i class="fa-solid fa-dragon" style="font-size: 1.5rem; margin-bottom: 5px; color: #EAB308;"></i><br>
+            Macera
+        </button>
+</div>
+
+<!-- ================= MİNİ OYUNLAR KATEGORİSİ ================= -->
+<div id="category-mini" class="category-section active">
+    <div class="nav-bar">
+        <button class="nav-btn active" onclick="switchGame('game-2048')"><i class="fa-solid fa-cubes"></i> 2048</button>
+        <button class="nav-btn" onclick="switchGame('game-chess')"><i class="fa-solid fa-chess"></i> Satranç</button>
+        <button class="nav-btn" onclick="switchGame('game-hangman')"><i class="fa-solid fa-font"></i> Adam Asmaca</button>
+        <button class="nav-btn" onclick="switchGame('game-sudoku')"><i class="fa-solid fa-table-cells"></i> Sudoku</button>
+        <button class="nav-btn" onclick="switchGame('game-timeline')"><i class="fa-solid fa-hourglass-half"></i> Önce / Sonra</button>
+        <button class="nav-btn" onclick="switchGame('game-wordle')"><i class="fa-solid fa-spell-check"></i> Tarihle</button>
+        <button class="nav-btn" onclick="switchGame('game-connections')"><i class="fa-solid fa-diagram-project"></i> Bağlantılar</button>
+        <button class="nav-btn" onclick="switchGame('game-whoami')"><i class="fa-solid fa-user-secret"></i> 5 İpucu</button>
+    </div>
+
+    <!-- 2048 OYUNU -->
+    <div id="game-2048" class="game-container active">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">2048 Klasik</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Ok yön tuşları veya kaydırarak oyna</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="score-box">
+                    <div class="score-title">Skor</div>
+                    <div class="score-value" id="score-2048">0</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-title">Rekor</div>
+                    <div class="score-value" id="best-2048">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-2048" id="grid-2048"></div>
+        <div class="controls">
+            <button class="action-btn" onclick="init2048(true)"><i class="fa-solid fa-rotate-right"></i> Yeniden Başla</button>
+        </div>
+    </div>
+
+    <!-- KLASİK SATRANÇ -->
+    <div id="game-chess" class="game-container">
+        <div class="game-header" style="flex-direction: column; align-items: stretch; margin-bottom: 15px;">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <h2 style="font-family: 'Playfair Display', serif;">Satranç</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Klasik Satranç Oyunu</p>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button class="action-btn" style="flex: 1; font-size: 0.75rem; background: #295F4E;" onclick="initChess('pvp')">İki Kişilik (PvP)</button>
+                <button class="action-btn" style="flex: 1; font-size: 0.75rem; background: #5d4037;" onclick="initChess('pve')">Yapay Zeka (PvE)</button>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 8px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; font-weight: bold;" id="chess-status">Sıra: Beyaz</div>
+                <div style="font-family: monospace; font-size: 1.2rem;" id="chess-turn-icon">♙</div>
+            </div>
+        </div>
+
+        <!-- Mobil Uyumlu Satranç Tahtası Konteyneri -->
+        <div style="width: 100%; max-width: 450px; margin: 0 auto; aspect-ratio: 1/1; position: relative;">
+            <div id="chess-board" class="chess-board"></div>
+            <!-- Terfi Seçici -->
+            <div id="chess-promotion" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--panel-bg); border: 2px solid var(--ink); padding: 10px; border-radius: 8px; z-index: 10; gap: 10px;">
+                <div class="chess-promo-btn" onclick="promotePawn('q')">♕</div>
+                <div class="chess-promo-btn" onclick="promotePawn('r')">♖</div>
+                <div class="chess-promo-btn" onclick="promotePawn('b')">♗</div>
+                <div class="chess-promo-btn" onclick="promotePawn('n')">♘</div>
+            </div>
+        </div>
+
+        <div class="controls" id="chess-restart" style="display: none;">
+            <button class="action-btn" onclick="initChess('pvp')"><i class="fa-solid fa-rotate-right"></i> Yeni Oyun</button>
+        </div>
+    </div>
+
+    <!-- ADAM ASMACA -->
+    <div id="game-hangman" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">Tarihi Kelime Avı</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Tarih ve medya kavramlarını bul</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="score-box">
+                    <div class="score-title">Skor</div>
+                    <div class="score-value" id="score-hangman">0</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-title">Rekor</div>
+                    <div class="score-value" id="best-hangman">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="hangman-display">
+            <div id="hangman-drawing" style="font-family: monospace; white-space: pre; font-size: 1.2rem; text-align: center; margin-bottom: 20px; font-weight: bold; color: var(--ink);"></div>
+            <div id="hangman-word" class="hangman-word"></div>
+            <div id="hangman-keyboard" class="hangman-keyboard"></div>
+        </div>
+        <div class="controls">
+            <button class="action-btn" onclick="initHangman()"><i class="fa-solid fa-arrow-right"></i> Sonraki Kelime</button>
+        </div>
+    </div>
+
+    <!-- SUDOKU -->
+    <div id="game-sudoku" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">Sudoku</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);" id="sudoku-diff-label">Seviye: Kolay</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" style="padding: 5px 10px; font-size: 0.7rem;" onclick="changeSudokuDiff('Kolay')">Kolay</button>
+                <button class="action-btn" style="padding: 5px 10px; font-size: 0.7rem;" onclick="changeSudokuDiff('Orta')">Orta</button>
+                <button class="action-btn" style="padding: 5px 10px; font-size: 0.7rem;" onclick="changeSudokuDiff('Zor')">Zor</button>
+            </div>
+        </div>
+        <div class="sudoku-board" id="sudoku-board"></div>
+        <div class="sudoku-numpad" id="sudoku-numpad">
+            <button onclick="sudokuInput(1)">1</button><button onclick="sudokuInput(2)">2</button><button onclick="sudokuInput(3)">3</button>
+            <button onclick="sudokuInput(4)">4</button><button onclick="sudokuInput(5)">5</button><button onclick="sudokuInput(6)">6</button>
+            <button onclick="sudokuInput(7)">7</button><button onclick="sudokuInput(8)">8</button><button onclick="sudokuInput(9)">9</button>
+            <button onclick="sudokuInput(0)" style="background: var(--c-9);"><i class="fa-solid fa-eraser"></i></button>
+        </div>
+        <div class="controls">
+            <button class="action-btn" onclick="initSudoku(true)"><i class="fa-solid fa-rotate-right"></i> Yeni Oyun</button>
+        </div>
+    </div>
+
+    <!-- ÖNCE Mİ, SONRA MI? -->
+    <div id="game-timeline" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">Önce mi, Sonra mı?</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Tarihsel zamanı doğru tahmin et</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="score-box">
+                    <div class="score-title">Seri</div>
+                    <div class="score-value" id="tl-score">0</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-title">En İyi Seri</div>
+                    <div class="score-value" id="tl-best">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-arena">
+            <div class="timeline-card reference">
+                <span class="timeline-badge ref">Referans Olay</span>
+                <h3 class="timeline-title" id="tl-ref-title">-</h3>
+                <p class="timeline-desc" id="tl-ref-desc">-</p>
+                <div class="timeline-year" id="tl-ref-year">-</div>
+            </div>
+            <div class="timeline-card target">
+                <span class="timeline-badge tar">Hedef Olay</span>
+                <h3 class="timeline-title" id="tl-target-title">-</h3>
+                <p class="timeline-desc" id="tl-target-desc">-</p>
+                <div class="timeline-year hidden-year" id="tl-target-year">?</div>
+                <div class="timeline-actions">
+                    <button class="timeline-btn before" id="btn-tl-before" onclick="guessTimeline('before')"><i class="fa-solid fa-arrow-left"></i> DAHA ÖNCE</button>
+                    <button class="timeline-btn after" id="btn-tl-after" onclick="guessTimeline('after')">DAHA SONRA <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="action-btn" onclick="initTimeline()"><i class="fa-solid fa-rotate-right"></i> Sıfırla ve Başla</button>
+        </div>
+    </div>
+
+    <!-- TARİHLE (WORDLE) -->
+    <div id="game-wordle" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">Tarihle</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">5 harfli gizli tarihi terimi bul</p>
+            </div>
+            <button class="action-btn" onclick="initWordle()" style="font-size: 0.75rem; padding: 6px 12px;"><i class="fa-solid fa-rotate-right"></i> Yeni Kelime</button>
+        </div>
+        <div class="wordle-board" id="wordle-board"></div>
+        <div id="wordle-msg" style="text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--c-9); margin-bottom: 15px; min-height: 20px;"></div>
+        <div class="wordle-keyboard" id="wordle-keyboard"></div>
+    </div>
+
+    <!-- TARİHSEL BAĞLANTILAR -->
+    <div id="game-connections" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">Tarihsel Bağlantılar</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Ortak noktası olan 4'erli grupları oluştur</p>
+            </div>
+            <button class="action-btn" onclick="initConnections()" style="font-size: 0.75rem; padding: 6px 12px;"><i class="fa-solid fa-rotate-right"></i> Yeni Oyun</button>
+        </div>
+        <div class="conn-mistakes">
+            <span>Kalan Hak:</span>
+            <div id="conn-dots" style="display: flex; gap: 6px;"></div>
+        </div>
+        <div class="conn-grid" id="conn-grid"></div>
+        <div class="conn-controls">
+            <button class="action-btn" style="background: var(--muted);" onclick="shuffleConnections()"><i class="fa-solid fa-shuffle"></i> Karıştır</button>
+            <button class="action-btn" style="background: var(--muted);" onclick="clearConnectionsSelection()">Temizle</button>
+            <button class="action-btn" style="background: var(--c-9);" onclick="submitConnectionsGuess()"><i class="fa-solid fa-check"></i> Tahmin Et</button>
+        </div>
+    </div>
+
+    <!-- 5 İPUCU — BEN KİMİM? -->
+    <div id="game-whoami" class="game-container">
+        <div class="game-header">
+            <div>
+                <h2 style="font-family: 'Playfair Display', serif;">5 İpucu — Ben Kimim?</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">En az ipucuyla tarihi şahsiyeti bil</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="score-box">
+                    <div class="score-title">Tur</div>
+                    <div class="score-value" id="whoami-round-info">1 / 12</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-title">Toplam Puan</div>
+                    <div class="score-value" id="whoami-total-score">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="whoami-clue-list" id="whoami-clue-list"></div>
+        <div class="whoami-options" id="whoami-options-area"></div>
+        <div class="whoami-result-card" id="whoami-result-area" style="display: none;"></div>
+        <div class="controls">
+            <button class="action-btn" onclick="initWhoAmI()"><i class="fa-solid fa-rotate-right"></i> Baştan Başla</button>
+        </div>
+    </div>
+</div>
+
+    <!-- ================= MACERA OYUNLARI KATEGORİSİ ================= -->
+<div id="category-gamesnroll" class="category-section">
+    <div class="nav-bar">
+        <button class="nav-btn active" onclick="switchGame('game-hagane')"><i class="fa-solid fa-khanda"></i> Hagane</button>
+        <button class="nav-btn" onclick="switchGame('game-tekir')"><i class="fa-solid fa-cat"></i> Tekir</button>
+    </div>
+
+    <!-- HAGANE -->
+    <div id="game-hagane" class="game-container active">
+        <div class="game-header">
+            <div style="text-align: center; width: 100%; margin-bottom: 10px;">
+                <h2 style="font-family: 'Playfair Display', serif; color: #EAB308;">HAGANE — Çeliğin Yolu</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Tarihi Bir Macera</p>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: center; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <iframe src="https://gamesnroll.com/embed/hagane-celigin-yolu/" width="100%" height="450" style="border:0; max-width:800px; aspect-ratio:16/9; height:auto" allow="autoplay; fullscreen; gamepad" allowfullscreen loading="lazy" title="HAGANE — Çeliğin Yolu"></iframe>
+        </div>
+    </div>
+
+    <!-- TEKİR -->
+    <div id="game-tekir" class="game-container">
+        <div class="game-header">
+            <div style="text-align: center; width: 100%; margin-bottom: 10px;">
+                <h2 style="font-family: 'Playfair Display', serif; color: #EAB308;">Tekir</h2>
+                <p style="font-size: 0.8rem; color: var(--muted);">Sokakların Fatihi</p>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: center; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <iframe src="https://gamesnroll.com/embed/tekir/" width="100%" height="450" style="border:0; max-width:800px; aspect-ratio:16/9; height:auto" allow="autoplay; fullscreen; gamepad" allowfullscreen loading="lazy" title="Tekir"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Gizli Veri İçe Aktarma Girdisi -->
+<input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)">
+
+<!-- ================= KULLANICI GİRİŞ & KAYIT MODALI ================= -->
+<div id="authModal" class="modal-overlay">
+    <div class="modal-content auth-modal-content">
+        <button type="button" class="modal-close" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+        
+        <div class="auth-header">
+            <div class="auth-icon-badge">
+                <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <h3 class="auth-title" id="authModalTitle">Tarih Portalı Girişi</h3>
+            <p class="auth-subtitle">İlerlemelerini kaydetmek için giriş yap veya kayıt ol</p>
+        </div>
+
+        <!-- Giriş / Kayıt Sekmeleri -->
+        <div class="auth-tabs">
+            <button type="button" class="auth-tab-btn active" id="authTabLogin" onclick="switchAuthTab('login')">
+                <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+            </button>
+            <button type="button" class="auth-tab-btn" id="authTabRegister" onclick="switchAuthTab('register')">
+                <i class="fa-solid fa-user-plus"></i> Kayıt Ol
+            </button>
+        </div>
+
+        <!-- Form Alanı: SADECE KULLANICI ADI VE ŞİFRE -->
+        <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <div class="auth-field">
+                <label for="authUsername"><i class="fa-solid fa-user"></i> Kullanıcı Adı</label>
+                <input type="text" id="authUsername" placeholder="Kullanıcı adınız..." required maxlength="25" autocomplete="username">
+            </div>
+
+            <div class="auth-field">
+                <label for="authPassword"><i class="fa-solid fa-lock"></i> Şifre</label>
+                <div class="auth-password-wrapper">
+                    <input type="password" id="authPassword" placeholder="Şifreniz..." required maxlength="30" autocomplete="current-password">
+                    <button type="button" class="auth-eye-btn" onclick="togglePasswordVisibility()" title="Şifreyi Göster/Gizle">
+                        <i class="fa-solid fa-eye" id="authEyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="authAlert" class="auth-alert"></div>
+
+            <button type="submit" id="authSubmitBtn" class="auth-submit-btn">
+                <span>Giriş Yap</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer-switch" id="authFooterSwitch">
+            <span>Hesabın yok mu?</span> <a href="javascript:void(0)" onclick="switchAuthTab('register')">Hemen Kayıt Ol</a>
+        </div>
+    </div>
+</div>
+
+<script src="motorlar/portal.js"></script>
+<script src="motorlar/auth.js"></script>
+<script src="motorlar/oyunlar.js"></script>
+<script src="motorlar/satranc.js"></script>
+<script src="motorlar/yeni_oyunlar.js"></script>
+</body>
+</html>

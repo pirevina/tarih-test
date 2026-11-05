@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dijital Tarih Müzesi — Boğaziçi Koleji</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e8e4d9">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,900;1,900&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --bg: #e8e4d9; 
+  --ink: #1a1815; 
+  --muted: #736b60; 
+  --accent: #8E523A; 
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { 
+  height: 100%; width: 100%; background: var(--bg); color: var(--ink); 
+  font-family: 'Inter', sans-serif; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-user-select: none; user-select: none;
+}
+
+/* ─── SERGİ ALANI ─── */
+.exhibition-hall {
+  position: relative; width: 100%; max-width: 500px; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 20px; text-align: center;
+}
+
+/* ─── MERKEZİ OBJE (Antik Vitrin) ─── */
+.artifact-pedestal {
+  position: relative; width: 220px; height: 220px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 50px;
+}
+
+/* Dönen Işık Halkası */
+.light-orbit {
+  position: absolute; width: 100%; height: 100%;
+  border: 1px solid rgba(142, 82, 58, 0.1); border-radius: 50%;
+  animation: orbit 20s linear infinite;
+}
+.light-orbit::after {
+  content: ''; position: absolute; top: -4px; left: 50%;
+  width: 8px; height: 8px; background: var(--accent);
+  border-radius: 50%; box-shadow: 0 0 15px var(--accent);
+}
+
+/* Obje Gölgesi */
+.artifact-shadow {
+  position: absolute; bottom: 10%; width: 60%; height: 20px;
+  background: rgba(0,0,0,0.05); filter: blur(10px); border-radius: 50%;
+  animation: shadowPulse 3s ease-in-out infinite;
+}
+
+.museum-monument {
+  font-size: 5rem; color: var(--accent); position: relative; z-index: 5;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+  animation: floatArtifact 4s ease-in-out infinite;
+}
+
+/* ─── TİPOGRAFİK KATMANLAR ─── */
+.exhibition-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.5em; color: var(--muted); text-transform: uppercase;
+  margin-bottom: 24px; opacity: 0.8;
+}
+
+.exhibition-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 3.5rem);
+  line-height: 0.85; margin-bottom: 25px;
+}
+.exhibition-title span { display: block; font-size: 1.5rem; font-style: italic; color: var(--accent); margin-top: 10px; font-weight: 400;}
+
+.exhibition-info {
+  font-size: 0.95rem; color: var(--muted); line-height: 1.6;
+  max-width: 320px; margin-bottom: 45px;
+}
+
+/* ─── BUTON ─── */
+.btn-return {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 28px; border: 1.5px solid var(--ink);
+  color: var(--ink); text-decoration: none; border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.btn-return:active { background: var(--ink); color: var(--bg); transform: scale(0.95); }
+
+/* ─── ANİMASYONLAR ─── */
+@keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes floatArtifact { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes shadowPulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.2); opacity: 0.1; } }
+
+</style>
+</head>
+<body>
+
+  <div class="exhibition-hall">
+    
+    <span class="exhibition-tag">// Dijital Bellek</span>
+
+    <div class="artifact-pedestal">
+      <div class="light-orbit"></div>
+      <div class="artifact-shadow"></div>
+      <i class="fas fa-landmark museum-monument"></i>
+    </div>
+
+    <h1 class="exhibition-title">
+      Dijital
+      <span>Tarih Müzesi</span>
+    </h1>
+
+    <p class="exhibition-info">
+      Koleksiyonumuz şu an restorasyon sürecinde.
+    </p>
+
+    <a href="index.html" class="btn-return">
+      <i class="fas fa-arrow-left"></i> Portala Dön
+    </a>
+
+  </div>
+
+  <script>
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = e => { if (e.keyCode === 123 || (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 67))) return false; };
+  </script>
+
+</body>
+</html>

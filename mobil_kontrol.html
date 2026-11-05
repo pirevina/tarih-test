@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tarih Portalı — Mobil Kontrol ve Teyit Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #d4af37;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --blue: #3b82f6;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--bg-color); color: var(--text-main); padding: 16px; line-height: 1.5; }
+        .header { text-align: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .header h1 { font-size: 20px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .header p { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+        
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-top: 10px; }
+        .status-online { background: rgba(46, 204, 113, 0.2); color: var(--green); border: 1px solid var(--green); }
+        .status-offline { background: rgba(231, 76, 60, 0.2); color: var(--red); border: 1px solid var(--red); }
+
+        .card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .card-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+        
+        .unit-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .unit-row:last-child { border-bottom: none; }
+        .unit-name { font-size: 14px; font-weight: 600; }
+        .unit-desc { font-size: 11px; color: var(--text-sub); display: block; }
+        
+        .btn-toggle { padding: 6px 14px; border-radius: 6px; font-size: 12.5px; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-open { background: rgba(46, 204, 113, 0.2); color: var(--green); border: 1px solid var(--green); }
+        .btn-locked { background: rgba(231, 76, 60, 0.2); color: var(--red); border: 1px solid var(--red); }
+
+        .action-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+        .btn-action { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; border-radius: 8px; font-size: 13.5px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+        .btn-action:active { transform: scale(0.98); }
+        
+        .btn-teacher { background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; }
+        .btn-zumre { background: linear-gradient(135deg, #8e44ad, #6c3483); color: #fff; }
+        .btn-student { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; }
+        .btn-reset { background: #334155; color: #cbd5e1; }
+
+        .tip-box { background: rgba(59, 130, 246, 0.12); border-left: 4px solid var(--blue); padding: 12px; border-radius: 0 8px 8px 0; font-size: 12.5px; color: #bfdbfe; margin-bottom: 16px; }
+        .tip-box strong { color: #fff; }
+
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #22c55e; color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 9999; }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><i class="fa-solid fa-mobile-screen-button"></i> Mobil Teyit ve Kilit Paneli</h1>
+        <p>Batman Boğaziçi Koleji — Tarih Portalı</p>
+        <div id="connStatus" class="status-badge status-online">
+            <i class="fa-solid fa-circle-check"></i> Sunucu Bağlantısı Aktif
+        </div>
+    </div>
+
+    <div class="tip-box">
+        <strong>Mobilden Nasıl Teyit Edilir?</strong><br>
+        1. Aşağıdan istediğiniz rolü seçip tek tıkla test oturumu başlatın.<br>
+        2. Ardından doğrudan <strong>9. Sınıf</strong> veya <strong>10. Sınıf</strong> portalına gidin.<br>
+        3. Ünitelerin durumunu (Açık / Kilitli) anında gözlemleyin!
+    </div>
+
+    <!-- 9. SINIF KİLİT DURUMU -->
+    <div class="card">
+        <div class="card-title">
+            <span><i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> 9. Sınıf Üniteleri</span>
+            <span id="s9Tarih" style="font-size:11px; color:var(--text-sub); font-weight:normal;"></span>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">1. Ünite</span>
+                <span class="unit-desc">Geçmişin İnşa Sürecinde Tarih</span>
+            </div>
+            <span class="btn-toggle btn-open"><i class="fa-solid fa-lock-open"></i> Her Zaman Açık</span>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">2. Ünite</span>
+                <span class="unit-desc">Eski Çağ Medeniyetleri</span>
+            </div>
+            <button id="btn_s9_u2" class="btn-toggle" onclick="toggleKilit('9', 'u2')">Yükleniyor...</button>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">3. Ünite</span>
+                <span class="unit-desc">Orta Çağ Medeniyetleri</span>
+            </div>
+            <button id="btn_s9_u3" class="btn-toggle" onclick="toggleKilit('9', 'u3')">Yükleniyor...</button>
+        </div>
+    </div>
+
+    <!-- 10. SINIF KİLİT DURUMU -->
+    <div class="card">
+        <div class="card-title">
+            <span><i class="fa-solid fa-landmark" style="color:var(--accent);"></i> 10. Sınıf Üniteleri</span>
+            <span id="s10Tarih" style="font-size:11px; color:var(--text-sub); font-weight:normal;"></span>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">1. Ünite</span>
+                <span class="unit-desc">Türkistan'dan Türkiye'ye (1040-1299)</span>
+            </div>
+            <span class="btn-toggle btn-open"><i class="fa-solid fa-lock-open"></i> Her Zaman Açık</span>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">2. Ünite</span>
+                <span class="unit-desc">Beylikten Devlete Osmanlı (1299-1453)</span>
+            </div>
+            <button id="btn_s10_u2" class="btn-toggle" onclick="toggleKilit('10', 'u2')">Yükleniyor...</button>
+        </div>
+        <div class="unit-row">
+            <div>
+                <span class="unit-name">3. Ünite</span>
+                <span class="unit-desc">Cihan Devleti Osmanlı (1453-1683)</span>
+            </div>
+            <button id="btn_s10_u3" class="btn-toggle" onclick="toggleKilit('10', 'u3')">Yükleniyor...</button>
+        </div>
+    </div>
+
+    <!-- HIZLI TEST OTURUMLARI (TEK TIKLA GİRİŞ & TEST) -->
+    <div class="card">
+        <div class="card-title">
+            <span><i class="fa-solid fa-user-gear" style="color:var(--blue);"></i> Hızlı Rol Simülatörü</span>
+        </div>
+        <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">
+            Şifre yazmakla uğraşmadan tek tıkla oturum açıp direkt sınıf sayfasına gidin:
+        </p>
+        <div class="action-grid">
+            <button class="btn-action btn-teacher" onclick="girisVeGit('ogretmen', '9')">
+                <i class="fa-solid fa-crown"></i> Murat Mutlu (Öğretmen) ile 9. Sınıfa Git
+            </button>
+            <button class="btn-action btn-zumre" onclick="girisVeGit('zumre', '9')">
+                <i class="fa-solid fa-chalkboard-user"></i> Zümre Öğretmeni ile 9. Sınıfa Git
+            </button>
+            <button class="btn-action btn-student" onclick="girisVeGit('ogrenci', '9')">
+                <i class="fa-solid fa-user-graduate"></i> Öğrenci Olarak 9. Sınıfa Git
+            </button>
+            <button class="btn-action btn-student" style="background: linear-gradient(135deg, #16a085, #117a65);" onclick="girisVeGit('ogrenci', '10')">
+                <i class="fa-solid fa-user-graduate"></i> Öğrenci Olarak 10. Sınıfa Git
+            </button>
+            <button class="btn-action btn-reset" onclick="oturumuSifirla()">
+                <i class="fa-solid fa-power-off"></i> Oturumu Temizle (Giriş Ekranına Dön)
+            </button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentKilitData = {
+            sinif9: { kilitli: ["u3"] },
+            sinif10: { kilitli: ["u3"] }
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        function verileriYukle() {
+            fetch('kilit_durumu.json?t=' + Date.now(), { cache: 'no-store' })
+                .then(r => {
+                    if (!r.ok) throw new Error("Ağ");
+                    return r.json();
+                })
+                .then(data => {
+                    currentKilitData = data;
+                    document.getElementById('connStatus').className = "status-badge status-online";
+                    document.getElementById('connStatus').innerHTML = '<i class="fa-solid fa-circle-check"></i> Sunucu Bağlantısı Aktif';
+                    uiGuncelle();
+                })
+                .catch(err => {
+                    document.getElementById('connStatus').className = "status-badge status-offline";
+                    document.getElementById('connStatus').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Çevrimdışı / Bağlantı Bekleniyor';
+                });
+        }
+
+        function uiGuncelle() {
+            const s9Kilit = (currentKilitData.sinif9 && currentKilitData.sinif9.kilitli) || ["u3"];
+            const s10Kilit = (currentKilitData.sinif10 && currentKilitData.sinif10.kilitli) || ["u3"];
+
+            // 9. Sınıf
+            btnAyarla('btn_s9_u2', s9Kilit.includes('u2'));
+            btnAyarla('btn_s9_u3', s9Kilit.includes('u3'));
+
+            // 10. Sınıf
+            btnAyarla('btn_s10_u2', s10Kilit.includes('u2'));
+            btnAyarla('btn_s10_u3', s10Kilit.includes('u3'));
+        }
+
+        function btnAyarla(btnId, kilitliMi) {
+            const b = document.getElementById(btnId);
+            if (!b) return;
+            if (kilitliMi) {
+                b.className = "btn-toggle btn-locked";
+                b.innerHTML = '<i class="fa-solid fa-lock"></i> Kilitli (Açmak İçin Tıkla)';
+            } else {
+                b.className = "btn-toggle btn-open";
+                b.innerHTML = '<i class="fa-solid fa-lock-open"></i> Açık (Kilitlemek İçin Tıkla)';
+            }
+        }
+
+        function toggleKilit(sinifNo, uniteId) {
+            const key = 'sinif' + sinifNo;
+            let list = (currentKilitData[key] && currentKilitData[key].kilitli) ? [...currentKilitData[key].kilitli] : [];
+            const idx = list.indexOf(uniteId);
+            if (idx === -1) {
+                list.push(uniteId); // Kilitle
+            } else {
+                list.splice(idx, 1); // Aç
+            }
+
+            // Anında UI güncelle
+            currentKilitData[key].kilitli = list;
+            uiGuncelle();
+
+            // LocalStorage'ı da güncelle
+            try {
+                localStorage.setItem('portal_kilit_ayarlari_sinif' + sinifNo, JSON.stringify(list));
+                localStorage.setItem('portal_kilit_ayarlari', JSON.stringify(list));
+            } catch(e) {}
+
+            // Sunucuya POST at
+            fetch('/api/unite-kilit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sinif: sinifNo, kilitli: list, guncelleyen: 'Murat Mutlu (Öğretmen)' })
+            })
+            .then(r => r.json())
+            .then(res => {
+                showToast(`✅ ${sinifNo}. Sınıf ${uniteId.toUpperCase()} durumu kaydedildi!`);
+            })
+            .catch(err => {
+                showToast(`⚠️ Yerel kaydedildi (Sunucu çevrimdışı)`);
+            });
+        }
+
+        function girisVeGit(rol, sinifNo) {
+            // Önceki oturumları temizle
+            localStorage.removeItem('globalZumreOturumu');
+            localStorage.removeItem('aktifOgrenci9');
+            localStorage.removeItem('aktifOgrenci10');
+            localStorage.removeItem('aktifOgrenci');
+
+            if (rol === 'ogretmen') {
+                const user = { ad: "Murat Mutlu (Öğretmen)", sinif: "Master", no: "Öğretmen" };
+                localStorage.setItem('globalZumreOturumu', JSON.stringify(user));
+                showToast("Murat Mutlu olarak giriş yapıldı!");
+            } else if (rol === 'zumre') {
+                const user = { ad: "Tarih Zümresi (Zümre)", sinif: "Tarih", no: "VIP-999" };
+                localStorage.setItem('globalZumreOturumu', JSON.stringify(user));
+                showToast("Zümre Öğretmeni olarak giriş yapıldı!");
+            } else if (rol === 'ogrenci') {
+                const user = { ad: "Öğrenci Test (Ali Yılmaz)", sinif: sinifNo + "-A", no: "101" };
+                localStorage.setItem('aktifOgrenci' + sinifNo, JSON.stringify(user));
+                showToast(`Öğrenci olarak giriş yapıldı!`);
+            }
+
+            setTimeout(() => {
+                window.location.href = (sinifNo === '10' ? 'sinif10.html' : 'sinif9.html');
+            }, 400);
+        }
+
+        function oturumuSifirla() {
+            localStorage.removeItem('globalZumreOturumu');
+            localStorage.removeItem('aktifOgrenci9');
+            localStorage.removeItem('aktifOgrenci10');
+            localStorage.removeItem('aktifOgrenci');
+            showToast("Tüm oturumlar sıfırlandı!");
+        }
+
+        verileriYukle();
+        setInterval(verileriYukle, 3000);
+    </script>
+</body>
+</html>

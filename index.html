@@ -1,0 +1,275 @@
+<!--
+Copyright (C) [2026] [Murat Mutlu, murat@kirkyama.uk]
+
+Bu site ve araçları özgür bir sitedir; Free Software Foundation tarafından yayınlanan 
+GNU Genel Kamu Lisansı'nın (GPL) 3. sürümü veya (tercihinize bağlı olarak) 
+daha sonraki herhangi bir sürümü kapsamında maddi ve ticari çıkar olmaksızın yeniden dağıtabilir ve/veya 
+değiştirebilirsiniz.
+
+Bu site ve araçları, yararlı olması ümidiyle dağıtılmaktadır, ancak HİÇBİR GARANTİSİ YOKTUR.
+Ayrıntılar için GNU Genel Kamu Lisansına bakın. https://www.gnu.org/licenses/gpl-3.0.tr.html
+-->
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tarih Portalı — Boğaziçi Koleji</title>
+<link rel="icon" type="image/png" href="https://depo.kirkyama.uk/favicon.png">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e8e4d9">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="stiller/portal.css">
+
+<style>
+:root {
+  --bg-app: #e8e4d9; 
+  --panel-bg: #fdfcf9; 
+  --ink: #1a1815; 
+  --muted: #736b60; 
+  --accent: #9B1C1C; 
+  --border-light: rgba(0,0,0,0.06);
+
+  --c-9:   #8E523A; 
+  --c-10:  #295F4E; 
+  --c-11:  #1F425A; 
+  --c-12:  #9B1C1C; 
+  --c-med: #4A3B52; 
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { 
+  height: 100%; width: 100%; 
+  background-color: var(--bg-app); 
+  background-image: radial-gradient(circle at top center, #f5f3ee 0%, #e8e4d9 100%);
+  color: var(--ink); 
+  font-family: 'Inter', sans-serif; 
+  overflow: hidden; 
+  -webkit-user-select: none; -ms-user-select: none; user-select: none;
+}
+
+.monolith-viewport { height: 100%; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; position: relative; }
+
+/* ─── Header ─── */
+.header { padding: 24px 20px 16px; text-align: center; flex-shrink: 0; }
+.ph-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.25em; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 700;}
+.ph-title { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 900; line-height: 1.1; color: var(--ink); }
+
+/* ─── Sütunlar ─── */
+.monolith-stage { flex: 1; display: flex; gap: 4px; padding: 0 16px 12px; min-height: 0; }
+.pillar { flex: 1; background: var(--panel-bg); border-radius: 12px; position: relative; overflow: hidden; display: flex; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03), inset 0 0 0 1px var(--border-light); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: flex 0.5s cubic-bezier(0.25, 1, 0.3, 1), box-shadow 0.4s; }
+.pillar.active { flex: 5.5; box-shadow: 0 15px 35px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.05); cursor: default; }
+
+/* Kapalı Durum Düzenlemesi */
+.p-collapsed { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; padding: 25px 0; opacity: 1; transition: opacity 0.3s ease; }
+.pillar.active .p-collapsed { opacity: 0; pointer-events: none; }
+
+.pc-num-wrapper { display: flex; align-items: flex-start; gap: 2px; margin-bottom: auto; }
+.pc-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.pc-mini-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; font-weight: 700; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); margin-top: 2px; }
+
+.pc-text { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; font-weight: 600; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+
+/* Açık Durum Düzenlemesi */
+.p-expanded { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 22px 14px; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transform: translateX(-10px); transition: opacity 0.3s ease 0.25s, transform 0.3s ease 0.25s; }
+.pillar.active .p-expanded { opacity: 1; pointer-events: auto; transform: translateX(0); }
+.pe-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.15em; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block;}
+.pe-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); line-height: 1.1; margin-bottom: 10px; }
+.pe-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.45; margin-bottom: 16px; flex: 1;}
+.pe-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; width: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; text-decoration: none; border-radius: 8px; transition: opacity 0.2s, transform 0.1s; }
+.pe-btn:active { transform: scale(0.96); }
+
+/* ─── Alt Menü (Dock) ─── */
+.bottom-dock { margin: 0 16px 12px; padding: 10px 16px; display: flex; justify-content: space-around; align-items: center; flex-shrink: 0; }
+.dock-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--muted); transition: transform 0.2s; flex: 1; text-align: center; }
+.dock-item:active { transform: scale(0.9); }
+.dock-icon { font-size: 1.3rem; }
+.dock-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ─── Footer ─── */
+.footer { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-bottom: 18px; flex-shrink: 0; }
+.footer-text { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; color: var(--muted); font-weight: 600; text-transform: uppercase; text-align: center; letter-spacing: 0.05em;}
+.footer-badges { display: flex; align-items: center; gap: 6px; }
+.footer-v { background: var(--ink); color: #fff; padding: 0 10px; height: 22px; border-radius: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; display: flex; align-items: center; font-weight: 600; letter-spacing: 0.05em; }
+.footer-mail { background: var(--ink); color: #fff; width: 30px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.footer-mail svg { width: 12px; height: 12px; stroke-width: 2.5; }
+
+/* ─── Modallar ─── */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 24, 21, 0.75); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content { background: var(--panel-bg); border-radius: 16px; width: 85%; max-width: 400px; padding: 24px; position: relative; transform: translateY(-20px) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+.modal-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.05); border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.modal-header { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 800; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.info-item { margin-bottom: 20px; padding-left: 14px; border-left: 3px solid var(--c-9); }
+.info-item h4 { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+.info-item p { font-size: 0.88rem; color: var(--ink); line-height: 1.45; }
+.info-item a { color: var(--accent); font-weight: 700; text-decoration: underline; margin-top: 4px; display: inline-block; }
+
+/* Renk Atamaları */
+.theme-9 .pc-num { color: var(--c-9); } .theme-9 .pe-btn { background: var(--c-9); }
+.theme-10 .pc-num { color: var(--c-10); } .theme-10 .pe-btn { background: var(--c-10); }
+.theme-11 .pc-num { color: var(--c-11); } .theme-11 .pe-btn { background: var(--c-11); }
+.theme-12 .pc-num { color: var(--c-12); } .theme-12 .pe-btn { background: var(--c-12); }
+.theme-med .pc-num { color: var(--c-med); font-size: 1.2rem;} .theme-med .pe-btn { background: var(--c-med); }
+</style>
+    <link rel="stylesheet" href="stiller/rehber.css">
+</head>
+<body>
+
+<div class="monolith-viewport">
+
+  <div class="header" style="padding-bottom: 10px;">
+    <span class="ph-eyebrow">ÖZEL BATMAN BOĞAZİÇİ KOLEJİ MTAL</span>
+    <h1 class="ph-title">Tarih Portalı</h1>
+  </div>
+
+  <div class="monolith-stage">
+    <div class="pillar theme-9" onclick="openPillar(this)">
+      <div class="p-collapsed">
+        <div class="pc-num-wrapper"><span class="pc-num">9</span><span class="pc-mini-label">SINIF</span></div>
+        <span class="pc-text">İLK VE ORTA ÇAĞ</span>
+      </div>
+      <div class="p-expanded"><span class="pe-eyebrow">MÖ 3500</span><h2 class="pe-title">İlk Çağ'dan Orta Çağ'a</h2><p class="pe-desc">Tarih metodolojisi, İnsanlığın kökeni ve İlk ve Orta Çağ uygarlıkları.</p><a href="sinif9.html" class="pe-btn">Sınıfa Git</a></div>
+    </div>
+    <div class="pillar theme-10" onclick="openPillar(this)">
+      <div class="p-collapsed">
+        <div class="pc-num-wrapper"><span class="pc-num">10</span><span class="pc-mini-label">SINIF</span></div>
+        <span class="pc-text">SELÇUKLU MİRASI VE OSMANLI</span>
+      </div>
+      <div class="p-expanded"><span class="pe-eyebrow">1040</span><h2 class="pe-title">Selçuklu Mirası ve Osmanlı</h2><p class="pe-desc">Selçuklu'nun yükselişi ve düşüşü, Osmanlı Devleti'nin kuruluşu, Klasik Çağ.</p><a href="sinif10.html" class="pe-btn">Sınıfa Git</a></div>
+    </div>
+    <div class="pillar theme-11" onclick="openPillar(this)">
+      <div class="p-collapsed">
+        <div class="pc-num-wrapper"><span class="pc-num">11</span><span class="pc-mini-label">SINIF</span></div>
+        <span class="pc-text">DEVRİM VE DEĞİŞİM ÇAĞI</span>
+      </div>
+      <div class="p-expanded"><span class="pe-eyebrow">1600</span><h2 class="pe-title">Devrim ve Değişim Çağı</h2><p class="pe-desc">Avrupa'daki devrimler ve Osmanlı'da değişim.</p><a href="sinif11.html" class="pe-btn">Sınıfa Git</a></div>
+    </div>
+    <div class="pillar theme-12" onclick="openPillar(this)">
+      <div class="p-collapsed">
+        <div class="pc-num-wrapper"><span class="pc-num">12</span><span class="pc-mini-label">SINIF</span></div>
+        <span class="pc-text">CUMHURİYET</span>
+      </div>
+      <div class="p-expanded"><span class="pe-eyebrow">1919</span><h2 class="pe-title">Cumhuriyet</h2><p class="pe-desc">Milli Mücadele, modern Türkiye'nin doğuşu ve modern Dünya tarihi.</p><a href="sinif12.html" class="pe-btn">Sınıfa Git</a></div>
+    </div>
+    <div class="pillar theme-med" onclick="openPillar(this)">
+      <div class="p-collapsed"><div class="pc-num-wrapper"><span class="pc-num">#</span></div><span class="pc-text">MEDYA OKURYAZARLIĞI</span></div>
+      <div class="p-expanded"><span class="pe-eyebrow">DİJİTAL ÇAĞ</span><h2 class="pe-title">Medya Okuryazarlığı</h2><p class="pe-desc">Algoritmik mimari, YZ, Veri okuryazarlığı, dijital tehditler, vaka analizleri, güvenlik rehberi</p><a href="https://smo.kirkyama.uk/" class="pe-btn">Sayfaya Git</a></div>
+    </div>
+  </div>
+
+  <!-- Ana Sayfa İçerik Sonu -->
+
+  <div class="bottom-dock">
+    <a href="oyunlar.html" class="dock-item" style="color: var(--c-9);"><i class="fas fa-gamepad dock-icon"></i><span class="dock-label">Ders Dışı</span></a>
+    <a href="muze.html" class="dock-item"><i class="fas fa-landmark dock-icon"></i><span class="dock-label">Müze</span></a>
+    <a href="https://sinema.kirkyama.uk" class="dock-item" target="_blank"><i class="fas fa-film dock-icon"></i><span class="dock-label">Sinema</span></a>
+    <div class="dock-item" id="annToggle"><i class="fas fa-bullhorn dock-icon"></i><span class="dock-label">Duyuru</span></div>
+    <div class="dock-item" id="guideToggle"><i class="fas fa-question-circle dock-icon"></i><span class="dock-label">Rehber</span></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-text">TASARIM VE KODLAMA: MURAT MUTLU, TARİH ÖĞRETMENİ</div>
+    <div class="footer-badges">
+      <span class="footer-v">PORTAL V1.0</span>
+      <a href="mailto:murat@kirkyama.uk" class="footer-mail">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </a>
+	  <a href="https://kirkyama.uk/" target="_blank" title="kırkyama">
+    <img src="https://depo.kirkyama.uk/k%C4%B1rkyama%20pe%C3%A7.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; vertical-align: middle; margin-left: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+</a>
+	  <a href="https://www.gnu.org/licenses/gpl-3.0.tr.html" target="_blank" title="Free Web">
+    <img src="https://depo.kirkyama.uk/ara%C3%A7lar/gnu.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; vertical-align: middle; margin-left: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+</a>
+    </div>
+  </footer>
+
+  <div id="annModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="closeAnn"><i class="fas fa-times"></i></button>
+      <div class="modal-header"><i class="fas fa-bullhorn"></i> Duyurular</div>
+      <div class="info-item" style="border-left-color: var(--c-9);"><h4>9. Sınıf</h4><p>Ortaçağ'da Yönetenler ödevi süresi 20 Nisan'dır. <a href="sinif9.html">Detaylar</a></p></div>
+      <div class="info-item" style="border-left-color: var(--c-10);"><h4>10. Sınıf</h4><p>Selçuklu ve Osmanlı testleri yayınlanmıştır. <a href="sinif10.html">Git</a></p></div>
+      <div class="info-item" style="border-left-color: var(--accent);"><h4>11. ve 12. Sınıf</h4><p>Sınıf siteniz yakında yayına <a href="sinif11.html">girecektir.</a></p></div>
+    </div>
+  </div>
+
+  <div id="guideModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="closeGuide"><i class="fas fa-times"></i></button>
+      <div class="modal-header"><i class="fas fa-book-open"></i> Portal Rehberi</div>
+      <div class="info-item"><h4>1. Seçim</h4><p>Numaralı sütunlara dokunarak tarih dönemlerini genişletin.</p></div>
+      <div class="info-item"><h4>2. Keşif</h4><p>"Sınıfa Git" butonu ile ders içeriklerine ulaşın.</p></div>
+	  <div class="info-item"><h4>3. Giriş</h4><p>Sınıfınızın sayfasına girmek için tüm alanları doldurun. Şifreniz ilk giriş için okul numaranız+soyadınızdır. İlk kez giriş yaptıktan sonra şifrenizi mutlaka değiştirin. Unutmayın; şifrenizin sorumluluğu tamamen sizdedir.</p></div>
+      <div class="info-item"><h4>4. Giriş Sorunu</h4><p>Şifrenizi unutmanız veya sisteme giremezseniz okul saatleri içinde Tarih öğretmeni Murat Mutlu'ya ulaşın. Yeni şifreniz hemen verilecektir.</p></div>
+      <button type="button" class="rehber-tekrar-btn" onclick="document.getElementById('guideModal').classList.remove('active'); rehberiBaslat();"><i class="fas fa-route"></i> Etkileşimli Turu Yeniden Başlat</button>
+	</div>
+  </div>
+
+</div>
+
+<script>
+  // Derin Link (Deep Link) Akıllı Yönlendirici
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    if ([...params.keys()].length > 0) {
+      const sinif = params.get('sinif');
+      const test = params.get('test') || params.get('sinav');
+      let hedefSayfa = null;
+
+      if (sinif === '10' || (test && (test.includes('u1_askeri') || test.includes('u1_teskilat') || test.includes('u1_sosyo') || test.includes('u2_kurulus') || test.includes('u3_cihan')))) {
+        hedefSayfa = 'sinif10.html';
+      } else if (sinif === '9' || test || params.get('video') || params.get('pdf') || params.get('sunu') || params.get('harita') || params.get('oyun')) {
+        hedefSayfa = 'sinif9.html';
+      }
+
+      if (hedefSayfa) {
+        window.location.replace(hedefSayfa + window.location.search);
+        return;
+      }
+    }
+  })();
+
+  function openPillar(el) {
+    if (el.classList.contains('active')) { el.classList.remove('active'); return; }
+    document.querySelectorAll('.pillar').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  const setupModal = (btnId, modalId, closeId) => {
+    const btn = document.getElementById(btnId);
+    const modal = document.getElementById(modalId);
+    const close = document.getElementById(closeId);
+    if(btn) btn.onclick = () => modal.classList.add('active');
+    if(close) close.onclick = () => modal.classList.remove('active');
+    window.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
+  };
+
+  setupModal('annToggle', 'annModal', 'closeAnn');
+  setupModal('guideToggle', 'guideModal', 'closeGuide');
+
+  if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.onkeydown = e => { if (e.keyCode === 123 || (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 83))) return false; };
+</script>
+
+<script src="motorlar/portal.js"></script>
+
+
+<!-- ═══ İNTERAKTİF KULLANIM REHBERİ ═══ -->
+<div id="rehber-overlay"></div>
+<div id="rehber-kutusu" role="dialog" aria-live="polite">
+    <div class="rehber-ust"><span id="rehber-sayac"></span><button type="button" id="rehber-atla">Atla</button></div>
+    <p id="rehber-metin"></p>
+    <button type="button" id="rehber-ileri">İleri</button>
+</div>
+<script src="motorlar/rehber.js"></script>
+
+</body>
+</html>
