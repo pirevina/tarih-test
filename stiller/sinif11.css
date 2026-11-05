@@ -1,0 +1,976 @@
+/* ═══════════════════════════════════════════════════════════════
+   11. SINIF – DENGE VE DİPLOMASİ ÇAĞI (1595-1914)
+   Prusya Mavisi (#1B325F, #080D1A) & Varak Altın (#D4AF37, #FFF2A8)
+═══════════════════════════════════════════════════════════════ */
+
+:root { 
+    --bg-color:         #080D1A;
+    --container-bg:     rgba(12, 20, 38, 0.78);
+    --text-color:       #F8F5EE;
+    --accent-color:     #1B325F;      /* Prusya Mavisi / Askeri Lacivert */
+    --accent-light:     #2B4C7E;      /* Açık Diplomasi Mavisi */
+    --secondary-accent: #D4AF37;      /* Varak Altın */
+    --card-border:      rgba(212, 175, 55, 0.28);
+    --option-hover:     rgba(27, 50, 95, 0.25);
+    --plyr-color-main:  #D4AF37;
+    --brass-glow:       #F1C40F;
+}
+
+body.sepia-mode { 
+    --accent-color: #5b3e31; 
+    --secondary-accent: #b03a2e; 
+}
+body.dark-mode { 
+    --accent-color: #1B325F; 
+    --secondary-accent: #D4AF37; 
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DENGE & DİPLOMASİ TEMASI (body.balance-theme)
+═══════════════════════════════════════════════════════════════ */
+body.balance-theme {
+    --bg-color:        #080D1A;
+    --container-bg:    rgba(10, 18, 36, 0.62);
+    --text-color:      #F8F5EE;
+    --accent-color:    #1B325F;
+    --accent-light:    #2B4C7E;
+    --secondary-accent:#D4AF37;
+    --card-border:     rgba(212, 175, 55, 0.28);
+    --option-hover:    rgba(27, 50, 95, 0.25);
+    --plyr-color-main: #D4AF37;
+}
+
+body.balance-theme.focus-mode {
+    --container-bg: #0A1020;
+    --card-border:  rgba(212, 175, 55, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ORTAK BİLEŞENLER VE ARAYÜZ STİLLERİ
+═══════════════════════════════════════════════════════════════ */
+
+/* 1. Ana Container */
+body.balance-theme .container {
+    background: var(--container-bg);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.65);
+    border: 1px solid var(--card-border);
+}
+
+/* 2. Kartlar / Klasör Butonları / Sınav Satırları */
+body.balance-theme .folder-btn,
+body.balance-theme .intro-box,
+body.balance-theme .test-item-row,
+body.balance-theme .mat-card {
+    background: linear-gradient(160deg, rgba(16, 26, 48, 0.90) 0%, rgba(8, 13, 26, 0.96) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    color: var(--text-color);
+}
+
+body.balance-theme .folder-btn:hover,
+body.balance-theme .test-item-row:hover,
+body.balance-theme .mat-card:hover {
+    border-color: var(--secondary-accent);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.22), 0 0 15px rgba(27, 50, 95, 0.4);
+}
+
+/* 3. Odak modunda soru kartları */
+body.balance-theme.focus-mode .question-card,
+body.balance-theme.focus-mode .options label {
+    background: #0D1527;
+    backdrop-filter: none;
+    box-shadow: none;
+}
+
+/* 4. İkon Renkleri */
+body.balance-theme .u1-icon,
+body.balance-theme .u2-icon,
+body.balance-theme .u3-icon,
+body.balance-theme .icon-wrapper {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--secondary-accent);
+}
+
+/* 5. Eylem Butonları */
+body.balance-theme .action-btn {
+    background: linear-gradient(135deg, #1B325F 0%, #2B4C7E 100%);
+    color: #F8F5EE;
+    box-shadow: 0 4px 15px rgba(27, 50, 95, 0.45);
+    border: 1px solid var(--card-border);
+}
+body.balance-theme .action-btn:hover,
+body.balance-theme .action-btn:active {
+    background: linear-gradient(135deg, #152648 0%, #1B325F 100%);
+    box-shadow: 0 6px 20px rgba(27, 50, 95, 0.65), 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+/* 6. Geri / İptal Butonları */
+body.balance-theme .back-btn {
+    background: var(--option-hover);
+    color: var(--text-color) !important;
+    border: 1px solid var(--card-border);
+    box-shadow: none;
+}
+body.balance-theme .back-btn:hover,
+body.balance-theme .back-btn:active {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--text-color) !important;
+}
+
+/* 7. Tab Butonları */
+body.balance-theme .tab-btn.active {
+    background: linear-gradient(135deg, rgba(27, 50, 95, 0.85), rgba(212, 175, 55, 0.45));
+    color: #F8F5EE;
+    border-bottom: 2px solid var(--secondary-accent);
+    box-shadow: none;
+}
+body.balance-theme .tab-btn {
+    color: var(--text-color);
+}
+
+/* 8. Sınav Başlat Butonu */
+body.balance-theme .test-item-start-btn {
+    background: rgba(27, 50, 95, 0.25);
+    color: var(--secondary-accent);
+    border-color: var(--card-border);
+}
+body.balance-theme .test-item-start-btn:hover,
+body.balance-theme .test-item-start-btn:active {
+    background: var(--secondary-accent);
+    color: #080D1A;
+}
+
+/* 9. Robot ve Ödev Butonları */
+body.balance-theme .robot-btn,
+body.balance-theme .odev-btn {
+    color: var(--secondary-accent) !important;
+    border-color: var(--card-border) !important;
+    background: transparent !important;
+}
+body.balance-theme .robot-btn:hover,
+body.balance-theme .robot-btn:active,
+body.balance-theme .odev-btn:hover,
+body.balance-theme .odev-btn:active {
+    background: rgba(212, 175, 55, 0.12) !important;
+    border-color: var(--secondary-accent) !important;
+}
+
+/* 10. Modallar */
+body.balance-theme .modal-content {
+    background: linear-gradient(160deg, rgba(16, 26, 48, 0.98) 0%, rgba(8, 13, 26, 0.99) 100%);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+/* 11. Sticky Header */
+body.balance-theme .sticky-header {
+    background: color-mix(in srgb, #080D1A 88%, transparent);
+    border-color: var(--card-border);
+}
+
+/* 12. Sınav Navigasyon Noktaları */
+body.balance-theme .nav-dot {
+    background: rgba(27, 50, 95, 0.35);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+body.balance-theme .nav-dot.answered {
+    background: var(--secondary-accent);
+    color: #080D1A;
+    border-color: var(--brass-glow);
+}
+
+/* 13. Soru Kartları ve Şıklar */
+body.balance-theme .question-card {
+    background: linear-gradient(160deg, rgba(16, 26, 48, 0.90) 0%, rgba(8, 13, 26, 0.96) 100%);
+    border-color: var(--card-border);
+}
+body.balance-theme .options label {
+    background: rgba(12, 20, 38, 0.7);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+body.balance-theme .options label:hover,
+body.balance-theme .options label:active {
+    background: var(--option-hover);
+    border-color: var(--secondary-accent);
+}
+
+/* 14. Arama Kutusu ve Konu Filtreleri */
+body.balance-theme .search-input {
+    background: rgba(12, 20, 38, 0.75);
+    color: var(--text-color);
+    border-color: transparent;
+}
+body.balance-theme .search-input:focus {
+    background: rgba(16, 26, 48, 0.95);
+    border-color: var(--secondary-accent);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+}
+
+body.balance-theme .konu-chip {
+    background: rgba(12, 20, 38, 0.65);
+    color: var(--secondary-accent);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+body.balance-theme .konu-chip.active {
+    background: var(--secondary-accent);
+    color: #080D1A;
+}
+body.balance-theme .scroll-arrow {
+    background: rgba(12, 20, 38, 0.85);
+    color: var(--secondary-accent);
+    border-color: var(--card-border);
+}
+body.balance-theme .scroll-arrow:hover {
+    background: var(--secondary-accent);
+    color: #080D1A;
+}
+
+/* 15. Salona Dön Butonu */
+body.balance-theme .back-to-hall-btn {
+    background: rgba(12, 20, 38, 0.7);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+body.balance-theme .back-to-hall-btn:hover {
+    background: rgba(212, 175, 55, 0.15);
+}
+
+/* 16. Tab Konteyneri */
+body.balance-theme .tab-container {
+    background: rgba(12, 20, 38, 0.7);
+    border-color: var(--card-border);
+}
+
+/* 17. ÜST SAĞ MENÜ (SETTINGS PANEL) & HAMBURGER MENÜ STİLLERİ */
+.settings-panel {
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+}
+
+.settings-btn {
+    background: rgba(8, 13, 26, 0.95) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    width: 46px; 
+    height: 46px;
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    font-size: 16px; 
+    font-weight: 700;
+    color: var(--secondary-accent) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.settings-btn.uzun-buton {
+    width: auto !important;
+    border-radius: 25px !important;
+    padding: 0 20px !important;
+    gap: 8px !important;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 14px;
+}
+
+.settings-btn:hover, .settings-btn:active {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3) !important;
+    background: rgba(212, 175, 55, 0.15) !important;
+    border-color: var(--secondary-accent) !important;
+    color: #FFF2A8 !important;
+}
+
+.dropdown-menu-container { 
+    position: relative; 
+    display: inline-flex; 
+    align-items: center; 
+}
+
+.glass-dropdown {
+    position: absolute; 
+    right: 0; 
+    top: 55px; 
+    width: 220px;
+    background: rgba(10, 16, 32, 0.98);
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    padding: 10px;
+    opacity: 0; 
+    visibility: hidden; 
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2000;
+}
+.glass-dropdown.active { 
+    opacity: 1; 
+    visibility: visible; 
+    transform: translateY(0); 
+}
+
+.dropdown-item {
+    background: transparent; 
+    border: none; 
+    color: var(--text-color);
+    padding: 12px 15px; 
+    text-align: left; 
+    font-size: 14px; 
+    font-weight: 700;
+    border-radius: 10px; 
+    cursor: pointer; 
+    transition: all 0.2s;
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    text-decoration: none;
+    font-family: 'Josefin Sans', 'Inter', sans-serif;
+}
+.dropdown-item:hover { 
+    background: rgba(212, 175, 55, 0.14); 
+    color: var(--secondary-accent); 
+    transform: translateX(5px); 
+}
+.dropdown-item i { 
+    width: 20px; 
+    text-align: center; 
+    font-size: 16px; 
+}
+
+/* 18. Form Inputları */
+body.balance-theme input,
+body.balance-theme select,
+body.balance-theme textarea {
+    background: rgba(8, 13, 26, 0.80);
+    color: var(--text-color);
+    border-color: rgba(212, 175, 55, 0.22);
+}
+body.balance-theme input:focus,
+body.balance-theme select:focus,
+body.balance-theme textarea:focus {
+    border-color: var(--secondary-accent);
+    background: rgba(16, 26, 48, 0.95);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+}
+body.balance-theme input::placeholder,
+body.balance-theme textarea::placeholder {
+    color: rgba(248, 245, 238, 0.32);
+}
+
+/* 19. Dosya Yükleme Alanı */
+body.balance-theme .upload-area {
+    background: rgba(12, 20, 38, 0.6);
+    border-color: rgba(212, 175, 55, 0.25);
+}
+body.balance-theme .upload-area:hover {
+    border-color: var(--secondary-accent);
+    background: rgba(27, 50, 95, 0.2);
+}
+
+/* 20. Soru Çözüm Açıklama Kartı */
+body.balance-theme .explanation-card {
+    background: rgba(12, 20, 38, 0.7);
+    color: var(--text-color);
+    border-left-color: var(--card-border);
+}
+body.balance-theme .explanation-card.correct {
+    background: rgba(39,174,96,0.12);
+    border-left-color: #27ae60;
+}
+body.balance-theme .explanation-card.wrong {
+    background: rgba(231,76,60,0.12);
+    border-left-color: #e74c3c;
+}
+
+/* 21. Klasör ve Kart Kenarları */
+.test-item-row { border-left: 6px solid var(--accent-color); }
+.test-item-row.klasik { border-left-color: var(--secondary-accent); }
+.test-item-row:hover { border-color: var(--accent-color); }
+.test-item-row.klasik:hover { border-color: var(--secondary-accent); }
+.test-item-row.klasik .test-item-start-btn { color: var(--secondary-accent); }
+.test-item-row.klasik .test-item-start-btn:hover { background: var(--secondary-accent); color: #080D1A; border-color: var(--secondary-accent); }
+
+.konu-chip.klasik { border-color: var(--secondary-accent); color: var(--secondary-accent); }
+.konu-chip.klasik.active { background: var(--secondary-accent); color: #080D1A; box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3); }
+
+/* 22. Yüzen İletişim Butonu */
+#iletisimBtnFloating {
+    background: rgba(27, 50, 95, 0.45) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    color: #F8F5EE !important;
+    opacity: 0.75;
+    transform: scale(0.92);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+}
+#iletisimBtnFloating:hover {
+    opacity: 1;
+    background: rgba(27, 50, 95, 0.95) !important;
+    border-color: var(--secondary-accent) !important;
+    color: #F8F5EE !important;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(27, 50, 95, 0.55), 0 0 15px rgba(212, 175, 55, 0.35) !important;
+}
+
+/* 23. Alt Bilgi (Footer) */
+.modern-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; margin-top: 30px; border-radius: 12px;
+    background: transparent; border: none; box-shadow: none;
+    color: var(--text-color); font-size: 13px; font-weight: 500;
+}
+.footer-left { display: flex; align-items: center; gap: 10px; }
+.version-badge { 
+    background: rgba(27, 50, 95, 0.45); 
+    color: var(--secondary-accent); 
+    padding: 3px 8px; 
+    border-radius: 4px; 
+    font-size: 11px; 
+    font-weight: 700; 
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.footer-right { display: flex; align-items: center; gap: 15px; opacity: 0.9; }
+.footer-mail-btn { 
+    color: var(--secondary-accent); 
+    font-size: 16px; 
+    transition: transform 0.2s; 
+    text-decoration: none; 
+    display: flex; align-items: center; justify-content: center; 
+    width: 32px; height: 32px; 
+    background: rgba(212, 175, 55, 0.12); 
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 50%; 
+}
+.footer-mail-btn:hover { 
+    transform: scale(1.15); 
+    background: var(--secondary-accent); 
+    color: #080D1A; 
+}
+@media (max-width: 768px) {
+    .modern-footer { flex-direction: column; text-align: center; gap: 12px; }
+    .footer-right { flex-direction: column; gap: 10px; }
+}
+
+/* 24. Tarihî Ses Oynatıcı (Glass Player) */
+.glass-player {
+    position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px;
+    background: rgba(12, 20, 38, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.35); box-shadow: 0 10px 40px rgba(0,0,0,0.7); border-radius: 16px;
+    padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; z-index: 1000;
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; visibility: hidden;
+}
+.glass-player.active { bottom: 25px; opacity: 1; visibility: visible; }
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+.player-icon-custom.playing i { animation: pulse-ring 2s infinite; color: var(--secondary-accent); }
+.player-top-row { display: flex; justify-content: space-between; align-items: center; }
+.player-info-custom { display: flex; align-items: center; gap: 12px; overflow: hidden; flex: 1; }
+.player-icon-custom { 
+    width: 45px; height: 45px; border-radius: 12px; 
+    background: rgba(212, 175, 55, 0.12); 
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    color: var(--secondary-accent); 
+    display: flex; align-items: center; justify-content: center; 
+    font-size: 22px; flex-shrink: 0; transition: 0.3s; 
+}
+.player-text-custom { display: flex; flex-direction: column; overflow: hidden; }
+.player-title-custom { font-weight: 700; color: var(--text-color); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-subtitle-custom { font-size: 12px; color: var(--text-color); opacity: 0.65; }
+.player-controls { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: -5px; }
+.ctrl-btn { background: none; border: none; color: var(--text-color); font-size: 20px; cursor: pointer; opacity: 0.75; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+.ctrl-btn:hover { opacity: 1; color: var(--secondary-accent); transform: scale(1.1); }
+.play-btn { 
+    width: 50px; height: 50px; 
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%); 
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    color: #F8F5EE !important; 
+    border-radius: 50%; font-size: 20px; opacity: 1; 
+    box-shadow: 0 4px 15px rgba(27, 50, 95, 0.5); 
+}
+.play-btn:hover { transform: scale(1.06); filter: brightness(1.1); }
+.progress-container { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; color: var(--text-color); opacity: 0.85; }
+.progress-bar-custom { flex: 1; height: 6px; background: rgba(212, 175, 55, 0.15); border-radius: 3px; cursor: pointer; position: relative; overflow: hidden; }
+.progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--secondary-accent); width: 0%; border-radius: 3px; transition: width 0.1s linear; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GİRİŞ EKRANI & TAM EKRAN DÜZENİ
+═══════════════════════════════════════════════════════════════ */
+
+html {
+    background-color: #080D1A !important;
+}
+
+html.login-page,
+body.login-page,
+html:has(.container.login-mode),
+body:has(.container.login-mode) {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+}
+
+.container.login-mode {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+body.balance-theme .settings-panel {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 10px 15px !important;
+}
+.container.login-mode .settings-panel {
+    position: fixed !important;
+    top: 15px !important;
+    right: 15px !important;
+    z-index: 9999 !important;
+}
+
+/* ── Arka Plan Katmanları ── */
+body,
+body.balance-theme {
+    background: #080D1A !important;
+    color: #F8F5EE !important;
+}
+
+.balance-bg, .balance-starfield, .balance-skyline {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+.balance-bg {
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(27, 50, 95, 0.42) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 15% 70%, rgba(43, 76, 126, 0.25) 0%, transparent 50%),
+        linear-gradient(180deg, #080D1A 0%, #0A1226 100%);
+}
+
+.balance-starfield {
+    z-index: 1;
+    overflow: hidden;
+}
+.balance-star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+    from { opacity: 0.15; }
+    to { opacity: 0.9; }
+}
+
+.balance-skyline {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: clamp(160px, 25vh, 240px);
+    z-index: 2;
+    overflow: hidden;
+    filter: drop-shadow(0 -4px 18px rgba(0, 0, 0, 0.75));
+}
+.balance-skyline svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Odak modu: sınav ekranlarında arka planı gizle */
+body.focus-mode .balance-bg,
+body.focus-mode .balance-starfield,
+body.focus-mode .balance-skyline {
+    opacity: 0 !important;
+    display: none !important;
+}
+
+/* ── Giriş Ekranı Kapsayıcısı ── */
+#girisEkrani {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Josefin Sans', sans-serif;
+    z-index: 10;
+    overflow: hidden;
+}
+#girisEkrani.hidden {
+    display: none !important;
+}
+
+.bal-wrap {
+    width: 100%;
+    max-width: 410px;
+    position: relative;
+    z-index: 10;
+    padding: 6px 14px;
+    margin: auto;
+    animation: reveal 0.8s ease forwards;
+    box-sizing: border-box;
+}
+@keyframes reveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Motif Şeridi ── */
+.bal-ornament {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+.bal-ornament span {
+    font-size: 15px;
+    opacity: 0.75;
+    color: var(--secondary-accent);
+    animation: balPulse 3s ease-in-out infinite alternate;
+}
+.bal-ornament span:nth-child(even) { animation-delay: 0.7s; color: var(--accent-light); }
+.bal-ornament span:nth-child(odd) { animation-delay: 1.4s; }
+@keyframes balPulse { from { opacity: 0.35; } to { opacity: 0.95; } }
+
+/* ── Denge ve Diplomasi Sembolü: Altın Adalet & Muvazene Terazisi ── */
+.bal-symbol {
+    text-align: center;
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 2px;
+    color: var(--secondary-accent);
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.55));
+    animation: symbolGlow 2.5s ease-in-out infinite alternate;
+}
+@keyframes symbolGlow {
+    from { filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4)); transform: scale(0.98); }
+    to { filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.85)); transform: scale(1.03); }
+}
+
+/* ── Header ── */
+.bal-header {
+    text-align: center;
+    margin-bottom: 6px;
+}
+.bal-era-tag {
+    display: inline-block;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--secondary-accent);
+    margin-bottom: 4px;
+    padding: 2px 10px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    background: rgba(27, 50, 95, 0.35);
+    border-radius: 20px;
+}
+.bal-title {
+    font-family: 'Marcellus', serif;
+    font-size: 24px;
+    color: #F8F5EE !important;
+    line-height: 1.1;
+    margin: 0;
+    text-shadow: 0 0 25px rgba(27, 50, 95, 0.5), 0 2px 8px rgba(0,0,0,0.8);
+}
+.bal-title span {
+    color: var(--secondary-accent, #D4AF37) !important;
+}
+.bal-school {
+    margin-top: 3px;
+    font-size: 10px;
+    color: rgba(248, 245, 238, 0.65);
+    letter-spacing: 0.5px;
+}
+
+/* ── Ayırıcı ── */
+.bal-hr {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 8px;
+}
+.bal-hr-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.35), transparent);
+}
+.bal-hr-icon {
+    font-size: 11px;
+    color: var(--secondary-accent);
+    opacity: 0.85;
+}
+
+/* ── Giriş Kartı ── */
+.bal-card {
+    background: linear-gradient(160deg, rgba(16, 26, 48, 0.96) 0%, rgba(8, 13, 26, 0.98) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.30);
+    border-radius: 8px;
+    padding: 14px 16px 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(27, 50, 95, 0.35), 0 8px 30px rgba(0,0,0,0.7), inset 0 0 25px rgba(0,0,0,0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+.bal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, #1B325F, #D4AF37, #FFF2A8, #D4AF37, #1B325F);
+}
+/* Filigran (Terazi) */
+.bal-card::after {
+    content: '⚖';
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    font-size: 40px;
+    color: rgba(212, 175, 55, 0.06);
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* ── Sekmeler ── */
+.bal-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.bal-tab, #girisEkrani button.tab-btn.bal-tab {
+    flex: 1;
+    padding: 7px 6px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+    background: transparent;
+    color: rgba(212, 175, 55, 0.6);
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.bal-tab.active, #girisEkrani button.tab-btn.bal-tab.active {
+    background: linear-gradient(135deg, rgba(27, 50, 95, 0.85), rgba(212, 175, 55, 0.45));
+    color: #F8F5EE;
+}
+.bal-tab:not(:last-child) { border-right: 1px solid rgba(212, 175, 55, 0.2); }
+.bal-tab:hover:not(.active) { background: rgba(212, 175, 55, 0.1); color: rgba(212, 175, 55, 0.9); }
+
+/* ── Form Alanları ── */
+.bal-field {
+    margin-bottom: 8px;
+}
+.bal-label {
+    display: block;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--secondary-accent);
+    margin-bottom: 3px;
+    opacity: 0.95;
+}
+.bal-input-wrap {
+    position: relative;
+}
+.bal-iicon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: rgba(212, 175, 55, 0.5);
+    pointer-events: none;
+}
+.bal-input-wrap input,
+.bal-input-wrap select {
+    width: 100%;
+    height: 34px;
+    padding: 6px 10px 6px 32px;
+    background: rgba(8, 13, 26, 0.85);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+    outline: none;
+    transition: all 0.25s;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+}
+.bal-input-wrap select option {
+    background: #0A1124;
+    color: var(--text-color);
+}
+.bal-input-wrap input::placeholder {
+    color: rgba(248, 245, 238, 0.3);
+    font-weight: 300;
+}
+.bal-input-wrap input:focus,
+.bal-input-wrap select:focus {
+    border-color: var(--secondary-accent);
+    background: rgba(20, 32, 60, 0.95);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.22), inset 0 1px 4px rgba(0,0,0,0.5);
+}
+.bal-caret {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(212, 175, 55, 0.5);
+    font-size: 10px;
+    pointer-events: none;
+}
+
+/* ── Giriş Butonu ── */
+.bal-btn {
+    width: 100%;
+    padding: 10px 16px;
+    margin-top: 4px;
+    background: linear-gradient(135deg, #1B325F 0%, #2B4C7E 100%);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 4px;
+    color: #F8F5EE;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(27, 50, 95, 0.45);
+}
+.bal-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.22), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.bal-btn:hover::before { opacity: 1; }
+.bal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(27, 50, 95, 0.65), 0 0 12px rgba(212, 175, 55, 0.35);
+    filter: brightness(1.08);
+}
+.bal-btn:active { transform: translateY(0); }
+
+/* ── Alıntı ── */
+.bal-quote {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 10px;
+    color: rgba(248, 245, 238, 0.45);
+    line-height: 1.35;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+}
+.bal-quote cite {
+    display: block;
+    font-style: italic;
+    font-size: 9px;
+    color: var(--secondary-accent);
+    margin-top: 2px;
+    letter-spacing: 0.6px;
+    opacity: 0.9;
+}
+
+/* ── Alt Bilgi ── */
+.bal-footer {
+    text-align: center;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+}
+.bal-footer-text {
+    font-size: 9.5px;
+    color: rgba(248, 245, 238, 0.4);
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+.bal-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    background: rgba(27, 50, 95, 0.35);
+    font-size: 8.5px;
+    color: var(--secondary-accent);
+    letter-spacing: 0.8px;
+    margin-left: 3px;
+    border-radius: 3px;
+}
+
+/* ── Ultra Kısa Ekranlar İçin Kompakt Düzen (Sıfır Kaydırma Garantisi) ── */
+@media (max-height: 700px) {
+    .bal-wrap { padding: 4px 12px; }
+    .bal-symbol { font-size: 22px; }
+    .bal-title { font-size: 20px; }
+    .bal-card { padding: 10px 14px 10px; }
+    .bal-field { margin-bottom: 6px; }
+    .bal-input-wrap input, .bal-input-wrap select { height: 32px; font-size: 11.5px; }
+    .bal-quote { font-size: 9px; margin-top: 6px; }
+}
+@media (max-height: 580px) {
+    .bal-ornament, .bal-quote, .bal-school { display: none !important; }
+    .bal-hr { margin: 3px 0 5px; }
+    .bal-card { padding: 8px 12px 8px; }
+    .bal-tabs { margin-bottom: 6px; }
+    .bal-btn { padding: 8px 12px; }
+}

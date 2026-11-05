@@ -1,0 +1,341 @@
+/* portal.css - Yeni Modüllerin Ortak Stilleri */
+
+/* ─── TARİHTE BUGÜN WIDGET'I ─── */
+.today-widget {
+    background: var(--panel-bg);
+    border-radius: 12px;
+    margin: 0 16px 16px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03), inset 0 0 0 1px var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.tih-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tih-body {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.4;
+    font-style: italic;
+}
+
+/* ─── ROZET BİLDİRİMİ (TOAST) ─── */
+.badge-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #fff;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid var(--border-light);
+}
+.badge-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+.bn-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+.bn-text {
+    display: flex;
+    flex-direction: column;
+}
+.bn-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+.bn-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--ink);
+}
+
+/* ─── PROFİL & KİMLİK KARTI ─── */
+.id-card {
+    background: linear-gradient(135deg, #fdfcf9 0%, #f4eee1 100%);
+    border: 2px solid #8E523A;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+.id-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 10px;
+    background: repeating-linear-gradient(45deg, #8E523A, #8E523A 10px, #295F4E 10px, #295F4E 20px);
+}
+.id-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--muted);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.id-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--ink);
+}
+.id-stamp {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #9B1C1C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9B1C1C;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.5rem;
+    font-weight: bold;
+    transform: rotate(-15deg);
+    opacity: 0.8;
+}
+.id-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.id-field-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+.id-field-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 5px;
+}
+.id-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    outline: none;
+}
+.id-input::placeholder {
+    color: #ccc;
+}
+
+/* ─── ROZET GALERİSİ ─── */
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    padding: 0 20px;
+}
+.badge-item {
+    background: var(--panel-bg);
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    filter: grayscale(1) opacity(0.5); /* Kilitli varsayılan */
+    transition: all 0.3s;
+}
+.badge-item.unlocked {
+    filter: grayscale(0) opacity(1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    border-color: currentColor;
+}
+.badge-item-icon {
+    font-size: 2.2rem;
+}
+.badge-item-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ─── ZAMAN TÜNELİ ─── */
+.timeline-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    opacity: 0.2;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.tl-year {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--c-9);
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+}
+.tl-content {
+    background: var(--panel-bg);
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 4px solid var(--c-10);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    flex: 1;
+}
+.tl-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--ink);
+}
+.tl-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* ─── KARAKTER KARTLARI (TINDER STİLİ) ─── */
+.cards-container {
+    height: 60vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.swipe-card {
+    position: absolute;
+    width:  90%;
+    max-width:  400px;
+    height:  auto; min-height: 580px; max-height: none; padding-bottom: 15px;
+    background: var(--panel-bg);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+    transform-origin: 50% 100%;
+    border: 1px solid var(--border-light);
+}
+.card-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 10px auto 20px auto;
+    border: 4px solid var(--panel-bg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.card-emoji {
+    font-size: 5rem;
+    margin: 20px 0;
+}
+.card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 5px;
+}
+.card-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.card-quote {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+ overflow-y: visible; flex-grow: 1; margin-bottom: 15px; padding-right: 5px; }
+.card-actions {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light);
+}
+.c-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.c-btn:active {
+    transform: scale(0.8);
+}
+.c-btn.no { color: #9B1C1C; }
+.c-btn.yes { color: #295F4E; }
+
+/* ─── HARİTA ALANI ─── */
+.map-container {
+    width: 100%;
+    padding: 10px;
+    overflow: hidden;
+}
+.map-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+}
+.map-region {
+    fill: #e0dcd3;
+    stroke: var(--ink);
+    stroke-width: 1;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.map-region:hover, .map-region.active {
+    fill: var(--c-9);
+}

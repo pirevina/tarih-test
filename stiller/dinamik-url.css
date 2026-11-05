@@ -1,0 +1,324 @@
+/* ═══════════════════════════════════════════════════════════════
+   TARİH PORTALI — DİNAMİK URL & DERİN LİNK (DEEP LINKING) STİLLERİ
+   9. ve 10. Sınıflar için Akıllı Yönlendirme, Hedef Banner ve Paylaşım Arayüzü
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── 1. GİRİŞ EKRANI HEDEF İÇERİK BİLGİLENDİRME KARTI ─── */
+.hedef-icerik-karti {
+    background: linear-gradient(145deg, rgba(28, 22, 12, 0.95) 0%, rgba(13, 17, 23, 0.98) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-top: 3px solid #c0392b; /* Osmanlı Kırmızısı Vurgu */
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin: 0 0 18px 0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(201, 168, 76, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    animation: hedefKartGelis 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    position: relative;
+    z-index: 10;
+}
+
+@keyframes hedefKartGelis {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.hedef-icerik-ikon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.25) 0%, rgba(192, 57, 43, 0.25) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #f1c40f;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: hedefIkonPulse 2s infinite ease-in-out;
+}
+
+@keyframes hedefIkonPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 14px 4px rgba(201, 168, 76, 0.25);
+        transform: scale(1.05);
+    }
+}
+
+.hedef-icerik-govde {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.hedef-icerik-rozet-satir {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.hedef-icerik-rozet {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(201, 168, 76, 0.2);
+    color: #f1c40f;
+    padding: 3px 9px;
+    border-radius: 6px;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+}
+
+.hedef-icerik-unite-rozet {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(232, 228, 217, 0.7);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.hedef-icerik-baslik {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin: 3px 0 6px 0;
+    line-height: 1.35;
+    word-break: break-word;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hedef-icerik-aciklama {
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(232, 228, 217, 0.8);
+    margin: 0;
+}
+
+.hedef-icerik-aciklama strong {
+    color: #f1c40f;
+}
+
+.hedef-icerik-iptal-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: rgba(232, 228, 217, 0.4);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.hedef-icerik-iptal-btn:hover {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.15);
+}
+
+/* ─── 2. TEST LİSTESİ PAYLAŞ BUTONU ─── */
+.test-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.test-item-share-btn {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--accent-color, #c9a84c);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.test-item-share-btn:hover {
+    background: var(--accent-color, #c9a84c);
+    color: #0d1117;
+    border-color: var(--accent-color, #c9a84c);
+    transform: scale(1.1);
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.4);
+}
+
+.test-item-share-btn:active {
+    transform: scale(0.92);
+}
+
+/* ─── 3. MATERYAL KARTI PAYLAŞ BUTONU ─── */
+.mat-card {
+    position: relative;
+}
+
+.mat-share-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(232, 228, 217, 0.85);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+
+.mat-card:hover .mat-share-btn,
+.mat-share-btn:hover {
+    opacity: 1;
+    background: var(--accent-color, #c9a84c);
+    color: #0d1117;
+    border-color: var(--accent-color, #c9a84c);
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── 4. HARİTA VE OYUN ÜSTÜ PAYLAŞ BUTONU ─── */
+.harita-share-btn {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--accent-color, #c9a84c);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-left: 10px;
+}
+
+.harita-share-btn:hover {
+    background: var(--accent-color, #c9a84c);
+    color: #0d1117;
+    box-shadow: 0 0 12px rgba(201, 168, 76, 0.4);
+}
+
+/* ─── 5. BAĞLANTI KOPYALANDI BİLDİRİM TOAST'I (TOAST POPUP) ─── */
+#dinamikUrlToast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.96) 0%, rgba(10, 10, 10, 0.98) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.6);
+    border-radius: 14px;
+    padding: 14px 22px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(201, 168, 76, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 290px;
+    max-width: 90vw;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#dinamikUrlToast.aktif {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.toast-ikon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+.toast-govde {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.toast-baslik {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f1c40f;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+}
+
+.toast-aciklama {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.35;
+}
+
+/* ─── 6. MOBİL UYARLAMALARI ─── */
+@media (max-width: 600px) {
+    .hedef-icerik-karti {
+        padding: 13px 14px;
+        gap: 10px;
+    }
+    .hedef-icerik-ikon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+    .hedef-icerik-baslik {
+        font-size: 14px;
+    }
+    .test-item-share-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    .mat-share-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+}

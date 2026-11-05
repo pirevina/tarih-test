@@ -1,0 +1,558 @@
+/* ═══════════════════════════════════════════════════════════════
+       10. SINIF – OSMANLI / SELÇUKLU / BİZANS TEMA
+       Renk paleti:
+         --sand   : altın vurgu   #C9A84C
+         --amber  : parlak altın  #E8A020
+         --crimson: Osmanlı kırmızı #8B1A1A
+         --crim-l : açık kırmızı  #A83232
+         --obsid  : gece siyahı   #0D1117
+         --papyrus: krem metin    #F4E4B0
+    ═══════════════════════════════════════════════════════════════ */
+
+    /* ═══════════════════════════════════════════════════════════════
+       OSMANLI KOYU TEMA – sinif9stil.css'teki egypt-theme'in tam eşdeğeri
+       Tüm arka planlar, kartlar, modallar, butonlar buradan çekilir.
+    ═══════════════════════════════════════════════════════════════ */
+
+    /* 1. CSS Değişkenleri – her şeyin temeli */
+    body.ottoman-theme {
+        --bg-color:       #0D1117;
+        --container-bg:   rgba(22, 12, 8, 0.65);
+        --text-color:     #F4E4B0;
+        --accent-color:   #C9A84C;
+        --card-border:    rgba(201, 168, 76, 0.25);
+        --option-hover:   rgba(139, 26, 26, 0.18);
+        --plyr-color-main:#C9A84C;
+    }
+
+    /* Odak modunda cam efektini kaldır */
+    body.ottoman-theme.focus-mode {
+        --container-bg: #0F0C0A;
+        --card-border:  rgba(201, 168, 76, 0.15);
+    }
+
+    /* 2. Ana container */
+    body.ottoman-theme .container {
+        background: var(--container-bg);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+
+    /* 3. Klasör/kart butonları */
+    body.ottoman-theme .folder-btn,
+    body.ottoman-theme .intro-box,
+    body.ottoman-theme .test-item-row,
+    body.ottoman-theme .mat-card {
+        background: linear-gradient(160deg, rgba(28,12,8,0.88) 0%, rgba(13,17,23,0.95) 100%);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+        color: var(--text-color);
+    }
+    body.ottoman-theme .folder-btn:hover,
+    body.ottoman-theme .test-item-row:hover,
+    body.ottoman-theme .mat-card:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 8px 30px rgba(201, 168, 76, 0.15);
+    }
+
+    /* 4. Odak modunda soru kartları düz zemin */
+    body.ottoman-theme.focus-mode .question-card,
+    body.ottoman-theme.focus-mode .options label {
+        background: #150E0A;
+        backdrop-filter: none;
+        box-shadow: none;
+    }
+
+    /* 5. İkon renkleri */
+    body.ottoman-theme .u1-icon,
+    body.ottoman-theme .u2-icon,
+    body.ottoman-theme .u3-icon,
+    body.ottoman-theme .icon-wrapper {
+        background: rgba(201, 168, 76, 0.1);
+        color: var(--accent-color);
+    }
+
+    /* 6. action-btn (Başlat, Bitir, Gönder vb.) */
+    body.ottoman-theme .action-btn {
+        background: linear-gradient(135deg, #8B1A1A 0%, #A83232 100%);
+        color: #F4E4B0;
+        box-shadow: 0 4px 15px rgba(139,26,26,0.35);
+        border: 1px solid rgba(201,168,76,0.3);
+    }
+    body.ottoman-theme .action-btn:hover,
+    body.ottoman-theme .action-btn:active {
+        background: linear-gradient(135deg, #6B1212 0%, #8B1A1A 100%);
+        box-shadow: 0 6px 20px rgba(139,26,26,0.55);
+    }
+
+    /* 7. Geri/iptal butonları */
+    body.ottoman-theme .back-btn {
+        background: var(--option-hover);
+        color: var(--text-color) !important;
+        border: 1px solid var(--card-border);
+        box-shadow: none;
+    }
+    body.ottoman-theme .back-btn:hover,
+    body.ottoman-theme .back-btn:active {
+        background: rgba(201,168,76,0.12);
+        color: var(--text-color) !important;
+    }
+
+    /* 8. Tab butonları (aktif) */
+    body.ottoman-theme .tab-btn.active {
+        background: linear-gradient(135deg, rgba(139,26,26,0.82), rgba(139,26,26,0.5));
+        color: #F4E4B0;
+        border-bottom: 2px solid var(--accent-color);
+        box-shadow: none;
+    }
+    body.ottoman-theme .tab-btn {
+        color: var(--text-color);
+    }
+
+    /* 9. Sınav başlat butonu */
+    body.ottoman-theme .test-item-start-btn {
+        background: rgba(139, 26, 26, 0.15);
+        color: var(--accent-color);
+        border-color: var(--card-border);
+    }
+    body.ottoman-theme .test-item-start-btn:hover,
+    body.ottoman-theme .test-item-start-btn:active {
+        background: var(--accent-color);
+        color: #0D1117;
+    }
+
+    /* 10. Robot & ödev butonları */
+    body.ottoman-theme .robot-btn,
+    body.ottoman-theme .odev-btn {
+        color: var(--accent-color);
+        border-color: var(--card-border);
+        background: transparent;
+    }
+    body.ottoman-theme .robot-btn:hover,
+    body.ottoman-theme .robot-btn:active,
+    body.ottoman-theme .odev-btn:hover,
+    body.ottoman-theme .odev-btn:active {
+        background: rgba(201,168,76,0.08);
+        border-color: var(--accent-color);
+    }
+
+    /* 11. Modal pencereleri */
+    body.ottoman-theme .modal-content {
+        background: linear-gradient(160deg, rgba(28,12,8,0.98) 0%, rgba(13,17,23,0.99) 100%);
+        border: 1px solid var(--card-border);
+        color: var(--text-color);
+    }
+
+    /* 12. Yapışkan header */
+    body.ottoman-theme .sticky-header {
+        background: color-mix(in srgb, #0F0C0A 88%, transparent);
+        border-color: var(--card-border);
+    }
+
+    /* 13. Navigasyon noktaları (sınav ekranı) */
+    body.ottoman-theme .nav-dot {
+        background: rgba(139,26,26,0.2);
+        border-color: var(--card-border);
+        color: var(--text-color);
+    }
+    body.ottoman-theme .nav-dot.answered {
+        background: var(--accent-color);
+        color: #0D1117;
+        border-color: #E8A020;
+    }
+
+    /* 14. Soru kartları */
+    body.ottoman-theme .question-card {
+        background: linear-gradient(160deg, rgba(28,12,8,0.85) 0%, rgba(13,17,23,0.95) 100%);
+        border-color: var(--card-border);
+    }
+    body.ottoman-theme .options label {
+        background: rgba(22,12,8,0.6);
+        border-color: var(--card-border);
+        color: var(--text-color);
+    }
+    body.ottoman-theme .options label:hover,
+    body.ottoman-theme .options label:active {
+        background: var(--option-hover);
+        border-color: var(--accent-color);
+    }
+
+    /* 15. Arama kutusu */
+    body.ottoman-theme .search-input {
+        background: rgba(22,12,8,0.6);
+        color: var(--text-color);
+        border-color: transparent;
+    }
+    body.ottoman-theme .search-input:focus {
+        background: rgba(28,12,8,0.9);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 4px rgba(201,168,76,0.15);
+    }
+
+    /* 16. Konu chip filtreleri */
+    body.ottoman-theme .konu-chip {
+        background: rgba(22,12,8,0.6);
+        color: var(--accent-color);
+        border-color: rgba(201,168,76,0.3);
+    }
+    body.ottoman-theme .konu-chip.active {
+        background: var(--accent-color);
+        color: #0D1117;
+    }
+    body.ottoman-theme .scroll-arrow {
+        background: rgba(22,12,8,0.8);
+        color: var(--accent-color);
+        border-color: var(--card-border);
+    }
+    body.ottoman-theme .scroll-arrow:hover {
+        background: var(--accent-color);
+        color: #0D1117;
+    }
+
+    /* 17. Back-to-hall butonu */
+    body.ottoman-theme .back-to-hall-btn {
+        background: rgba(22,12,8,0.6);
+        color: var(--text-color);
+        border: 1px solid var(--card-border);
+    }
+    body.ottoman-theme .back-to-hall-btn:hover {
+        background: rgba(201,168,76,0.1);
+    }
+
+    /* 18. Tab container arka planı */
+    body.ottoman-theme .tab-container {
+        background: rgba(22,12,8,0.6);
+        border-color: var(--card-border);
+    }
+
+    /* 19. Hamburger dropdown */
+    body.ottoman-theme .glass-dropdown {
+        background: rgba(18,10,6,0.97);
+        border-color: var(--card-border);
+    }
+    body.ottoman-theme .dropdown-item {
+        color: var(--text-color);
+    }
+    body.ottoman-theme .dropdown-item:hover {
+        background: rgba(201,168,76,0.1);
+        color: var(--accent-color);
+    }
+
+    /* 20. Form inputları (modal içindeki dahil) */
+    body.ottoman-theme input,
+    body.ottoman-theme select,
+    body.ottoman-theme textarea {
+        background: rgba(22,12,8,0.7);
+        color: var(--text-color);
+        border-color: rgba(201,168,76,0.2);
+    }
+    body.ottoman-theme input:focus,
+    body.ottoman-theme select:focus,
+    body.ottoman-theme textarea:focus {
+        border-color: var(--accent-color);
+        background: rgba(28,12,8,0.9);
+        box-shadow: 0 0 0 4px rgba(201,168,76,0.15);
+    }
+    body.ottoman-theme input::placeholder,
+    body.ottoman-theme textarea::placeholder {
+        color: rgba(244,228,176,0.25);
+    }
+
+    /* 21. Upload alanı */
+    body.ottoman-theme .upload-area {
+        background: rgba(22,12,8,0.5);
+        border-color: rgba(201,168,76,0.25);
+    }
+    body.ottoman-theme .upload-area:hover {
+        border-color: var(--accent-color);
+        background: rgba(139,26,26,0.1);
+    }
+
+    /* 22. Çözüm açıklama kartları */
+    body.ottoman-theme .explanation-card {
+        background: rgba(22,12,8,0.65);
+        color: var(--text-color);
+        border-left-color: var(--card-border);
+    }
+    body.ottoman-theme .explanation-card.correct {
+        background: rgba(39,174,96,0.1);
+        border-left-color: #27ae60;
+    }
+    body.ottoman-theme .explanation-card.wrong {
+        background: rgba(231,76,60,0.1);
+        border-left-color: #e74c3c;
+    }
+
+    /* 23. Oynatıcı */
+    .player-icon-custom.playing i { animation:pulse-ring 2s infinite; color:var(--accent-color); }
+    .player-icon-custom { background:rgba(201,168,76,0.1); color:var(--accent-color); }
+    .ctrl-btn:hover { color:var(--accent-color); }
+    .play-btn { background:linear-gradient(135deg,#8B1A1A 0%,#A83232 100%); box-shadow:0 4px 15px rgba(139,26,26,0.4); }
+    .play-btn:hover { background:linear-gradient(135deg,#6B1212 0%,#8B1A1A 100%); }
+    .progress-bar-custom { background:rgba(201,168,76,0.15); }
+    .progress-fill { background:var(--accent-color); }
+
+    @keyframes pulse-ring {
+        0%  { transform:scale(0.8); box-shadow:0 0 0 0 rgba(201,168,76,0.7); }
+        70% { transform:scale(1);   box-shadow:0 0 0 10px rgba(201,168,76,0); }
+        100%{ transform:scale(0.8); box-shadow:0 0 0 0 rgba(201,168,76,0); }
+    }
+
+    /* 24. Navigasyon butonları (üst bar) */
+    body.ottoman-theme .version-badge {
+        background: rgba(139,26,26,0.7);
+        color: #F4E4B0;
+        border: 1px solid rgba(201,168,76,0.3);
+    }
+    body.ottoman-theme .footer-mail-btn {
+        color: var(--accent-color);
+        background: rgba(201,168,76,0.1);
+        border-color: rgba(201,168,76,0.2);
+    }
+    body.ottoman-theme .footer-mail-btn:hover {
+        background: var(--accent-color);
+        color: #0D1117;
+    }
+    body.ottoman-theme .intro-icon { color: var(--accent-color); }
+
+    /* ── Body tam ekran (giriş) ── */
+    body:has(.container.login-mode) { margin:0 !important; padding:0 !important; }
+
+    .container.login-mode {
+        max-width:100% !important; margin:0 !important; padding:0 !important;
+        height:100dvh !important; overflow-y:auto !important; overflow-x:hidden !important;
+        display:flex; flex-direction:column;
+        background:transparent !important; border:none !important; box-shadow:none !important;
+    }
+
+    body.ottoman-theme .settings-panel {
+        background:transparent !important; border:none !important; box-shadow:none !important; padding:10px 15px !important;
+    }
+    .container.login-mode .settings-panel {
+        position:fixed !important; top:15px !important; right:15px !important; z-index:9999 !important;
+    }
+
+    /* ── Arka plan ── */
+    body.ottoman-theme {
+        background:#0D1117 !important;
+        color:#F4E4B0 !important;
+    }
+    .ottoman-bg, .ottoman-starfield, .ottoman-skyline {
+        position:fixed; inset:0; pointer-events:none; transition:opacity 0.8s ease;
+    }
+    .ottoman-bg {
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(139,26,26,0.25) 0%, transparent 50%),
+            radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.12) 0%, transparent 50%),
+            linear-gradient(180deg, #0D1117 0%, #0F1018 100%);
+        z-index:-3;
+    }
+    .ottoman-starfield { z-index:-2; overflow:hidden; }
+    .ottoman-star {
+        position:absolute; border-radius:50%; background:white;
+        animation:twinkle ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { from{opacity:0.1;} to{opacity:0.8;} }
+
+    /* ── Cami Silueti ── */
+    .ottoman-skyline {
+        top:auto; bottom:0; height:130px; z-index:-1; overflow:hidden;
+    }
+    .ottoman-skyline svg { width:100%; height:100%; display:block; }
+
+    /* Odak modu: sınav ekranlarında arka planı gizle */
+    body.focus-mode .ottoman-bg,
+    body.focus-mode .ottoman-starfield,
+    body.focus-mode .ottoman-skyline { opacity:0 !important; }
+
+    /* ── Giriş ekranı kapsayıcısı ── */
+    #girisEkrani {
+        position:relative; width:100%; min-height:100%;
+        display:flex; align-items:center; justify-content:center;
+        font-family:'Josefin Sans', sans-serif; z-index:10;
+    }
+    #girisEkrani.hidden { display:none !important; }
+
+    .ott-wrap {
+        width:100%; max-width:420px; position:relative;
+        z-index:10; padding:0 16px; margin:auto;
+        animation:reveal 0.9s ease forwards;
+    }
+    @keyframes reveal { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+
+    /* ── Ornament şeridi (hiyeroglif yerine Osmanlı motifleri) ── */
+    .ott-ornament {
+        display:flex; justify-content:center; gap:6px; margin-bottom:10px;
+    }
+    .ott-ornament span {
+        font-size:19px; opacity:0.55; color:#C9A84C;
+        animation:ornaPulse 3s ease-in-out infinite alternate;
+    }
+    .ott-ornament span:nth-child(2){animation-delay:0.5s;}
+    .ott-ornament span:nth-child(3){animation-delay:1s; font-size:22px;}
+    .ott-ornament span:nth-child(4){animation-delay:1.5s;}
+    .ott-ornament span:nth-child(5){animation-delay:2s;}
+    @keyframes ornaPulse { from{opacity:0.3;} to{opacity:0.75;} }
+
+    /* ── Hilal (Ra gözü yerine) ── */
+    .ott-crescent {
+        text-align:center; font-size:38px; margin-bottom:8px;
+        color:#C9A84C;
+        filter:drop-shadow(0 0 12px rgba(201,168,76,0.5));
+        animation:crescentGlow 2.5s ease-in-out infinite alternate;
+    }
+    @keyframes crescentGlow {
+        from{filter:drop-shadow(0 0 8px rgba(201,168,76,0.4));}
+        to  {filter:drop-shadow(0 0 18px rgba(201,168,76,0.85));}
+    }
+
+    /* ── Header ── */
+    .ott-header { text-align:center; margin-bottom:16px; }
+    .ott-era-tag {
+        display:inline-block;
+        font-size:9px; font-weight:600; letter-spacing:3px;
+        text-transform:uppercase; color:#A83232;
+        margin-bottom:10px; padding:4px 16px;
+        border:1px solid rgba(139,26,26,0.35);
+        background:rgba(139,26,26,0.08);
+    }
+    .ott-title {
+        font-family:'Marcellus', serif;
+        font-size:34px; color:#F4E4B0;
+        line-height:1.15;
+        text-shadow:0 0 30px rgba(201,168,76,0.25), 0 2px 10px rgba(0,0,0,0.6);
+    }
+    .ott-title span { color:#E8A020; }
+    .ott-school { margin-top:8px; font-size:11px; color:rgba(244,228,176,0.5); letter-spacing:0.5px; }
+
+    /* ── Ayırıcı çizgi ── */
+    .ott-hr { display:flex; align-items:center; gap:8px; margin:12px 0 16px; }
+    .ott-hr-line { flex:1; height:1px; background:linear-gradient(to right,transparent,rgba(201,168,76,0.3),transparent); }
+    .ott-hr-star { font-size:14px; color:#C9A84C; opacity:0.6; }
+
+    /* ── Kart ── */
+    .ott-card {
+        background:linear-gradient(160deg,rgba(28,12,12,0.96) 0%,rgba(13,17,23,0.97) 100%);
+        border:1px solid rgba(201,168,76,0.28);
+        border-radius:3px;
+        padding:26px 22px 22px;
+        position:relative; overflow:hidden;
+        box-shadow:0 0 50px rgba(139,26,26,0.15), 0 8px 40px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.3);
+    }
+    .ott-card::before {
+        content:'';
+        position:absolute; top:0; left:0; right:0; height:4px;
+        background:linear-gradient(to right,#8B1A1A,#C9A84C,#E8A020,#C9A84C,#8B1A1A);
+    }
+    /* Tuğra filigranı */
+    .ott-card::after {
+        content:'☽';
+        position:absolute; bottom:6px; right:12px;
+        font-size:38px; color:rgba(201,168,76,0.07);
+        pointer-events:none; line-height:1;
+    }
+
+    /* ── Sekmeler ── */
+    .ott-tabs {
+        display:flex; gap:0; margin-bottom:24px;
+        border:1px solid rgba(201,168,76,0.2); border-radius:2px; overflow:hidden;
+    }
+    .ott-tab, #girisEkrani button.tab-btn.ott-tab {
+        flex:1; padding:10px 8px;
+        font-family:'Josefin Sans',sans-serif; font-size:11px; font-weight:600;
+        letter-spacing:1.5px; text-transform:uppercase;
+        border:none; background:transparent; color:rgba(201,168,76,0.4);
+        cursor:pointer; transition:all 0.25s;
+    }
+    .ott-tab.active, #girisEkrani button.tab-btn.ott-tab.active {
+        background:linear-gradient(135deg,rgba(139,26,26,0.75),rgba(139,26,26,0.45));
+        color:#F4E4B0;
+    }
+    .ott-tab:not(:last-child) { border-right:1px solid rgba(201,168,76,0.15); }
+    .ott-tab:hover:not(.active) { background:rgba(201,168,76,0.07); color:rgba(201,168,76,0.7); }
+
+    /* ── Form alanları ── */
+    .ott-field { margin-bottom:18px; }
+    .ott-label {
+        display:block;
+        font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+        color:#A83232; margin-bottom:8px; opacity:0.9;
+    }
+    .ott-input-wrap { position:relative; }
+    .ott-iicon {
+        position:absolute; left:12px; top:50%;
+        transform:translateY(-50%); font-size:14px;
+        color:rgba(201,168,76,0.35); pointer-events:none;
+    }
+    .ott-input-wrap input,
+    .ott-input-wrap select {
+        width:100%;
+        padding:12px 14px 12px 38px;
+        background:rgba(13,17,23,0.85);
+        border:1px solid rgba(201,168,76,0.18);
+        border-radius:2px;
+        color:#F4E4B0;
+        font-family:'Josefin Sans',sans-serif; font-size:13px; font-weight:300;
+        letter-spacing:0.5px;
+        outline:none; transition:all 0.25s; -webkit-appearance:none;
+    }
+    .ott-input-wrap select option { background:#100808; }
+    .ott-input-wrap input::placeholder { color:rgba(244,228,176,0.2); font-weight:300; }
+    .ott-input-wrap input:focus,
+    .ott-input-wrap select:focus {
+        border-color:rgba(139,26,26,0.7);
+        background:rgba(139,26,26,0.08);
+        box-shadow:0 0 0 3px rgba(139,26,26,0.1), inset 0 1px 4px rgba(0,0,0,0.4);
+    }
+    .ott-caret {
+        position:absolute; right:12px; top:50%; transform:translateY(-50%);
+        color:rgba(201,168,76,0.35); font-size:11px; pointer-events:none;
+    }
+
+    /* ── Giriş butonu ── */
+    .ott-btn {
+        width:100%; padding:14px 20px; margin-top:6px;
+        background:linear-gradient(135deg,#8B1A1A 0%,#A83232 100%);
+        border:1px solid rgba(201,168,76,0.4);
+        border-radius:2px; color:#F4E4B0;
+        font-family:'Josefin Sans',sans-serif; font-size:12px; font-weight:700;
+        letter-spacing:4px; text-transform:uppercase;
+        cursor:pointer; transition:all 0.3s;
+        text-shadow:0 1px 3px rgba(0,0,0,0.4);
+        position:relative; overflow:hidden;
+    }
+    .ott-btn::before {
+        content:''; position:absolute; inset:0;
+        background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+        opacity:0; transition:opacity 0.3s;
+    }
+    .ott-btn:hover::before { opacity:1; }
+    .ott-btn:hover {
+        transform:translateY(-2px);
+        box-shadow:0 6px 26px rgba(139,26,26,0.5), 0 0 14px rgba(201,168,76,0.15);
+    }
+    .ott-btn:active { transform:translateY(0); }
+
+    /* ── Alıntı ── */
+    .ott-quote {
+        text-align:center; margin-top:14px;
+        font-size:11px; color:rgba(244,228,176,0.28);
+        line-height:1.6; font-weight:300; letter-spacing:0.3px;
+    }
+    .ott-quote cite {
+        display:block; font-style:italic; font-size:10px;
+        color:rgba(201,168,76,0.4); margin-top:3px; letter-spacing:1px;
+    }
+
+    /* ── Alt bilgi ── */
+    .ott-footer {
+        text-align:center; margin-top:16px; padding-top:12px;
+        border-top:1px solid rgba(201,168,76,0.1);
+    }
+    .ott-footer-text { font-size:11px; color:rgba(244,228,176,0.25); letter-spacing:0.3px; }
+    .ott-badge {
+        display:inline-block; padding:2px 8px;
+        border:1px solid rgba(201,168,76,0.25); background:rgba(201,168,76,0.07);
+        font-size:9px; color:#C9A84C; letter-spacing:1px; margin-left:4px;
+    }

@@ -1,0 +1,127 @@
+/* --- ANTİK MISIR GENEL TEMA VE TAM EKRAN DÜZENİ --- */
+        body.egypt-theme {
+            background: #0D1117 !important;
+            color: #F4E4B0 !important;
+        }
+        
+        body:has(.container.login-mode) {
+            margin: 0 !important; 
+            padding: 0 !important;
+        }
+
+        /* Giriş Ekranına Özel Tam Ekran Modu */
+        .container.login-mode {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100dvh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            display: flex;
+            flex-direction: column;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+/* Modern Butonların Karanlık Temaya Uyumlu Hali (Şeffaf) */
+        body.egypt-theme .settings-panel {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 10px 15px !important;
+        }
+        .container.login-mode .settings-panel {
+            position: fixed !important;
+            top: 15px !important;
+            right: 15px !important;
+            z-index: 9999 !important;
+        }
+
+        /* Arka Plan Efektleri (Tüm Sayfalarda Geçerli, Odak Modunda Gizlenir) */
+        .egypt-bg, .egypt-starfield, .egypt-pyramids {
+            position: fixed; inset: 0; pointer-events: none; transition: opacity 0.8s ease;
+        }
+        .egypt-bg {
+            background: radial-gradient(ellipse at 50% 0%, rgba(42,122,110,0.2) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.15) 0%, transparent 50%),
+                        linear-gradient(180deg, #0D1117 0%, #111820 100%);
+            z-index: -3;
+        }
+        .egypt-starfield { z-index: -2; overflow: hidden; }
+        .egypt-pyramids { top: auto; bottom: 0; height: 120px; z-index: -1; overflow: hidden; }
+        .egypt-pyramids svg { width: 100%; height: 100%; display: block; }
+        .egypt-star { position: absolute; border-radius: 50%; background: white; animation: egyptTwinkle ease-in-out infinite alternate; }
+        @keyframes egyptTwinkle { from { opacity: 0.1; } to { opacity: 0.8; } }
+
+        /* Odak Modu (Sınav ve Okuma Sırasında Dikkat Dağıtıcıları Gizle) */
+        body.focus-mode .egypt-bg,
+        body.focus-mode .egypt-starfield,
+        body.focus-mode .egypt-pyramids {
+            opacity: 0 !important;
+        }
+
+        /* Giriş Ekranı İçerik Stilleri (Sadece #girisEkrani içinde) */
+        #girisEkrani {
+            position: relative; width: 100%; min-height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Josefin Sans', sans-serif; z-index: 10;
+        }
+        #girisEkrani.hidden { display: none !important; }
+
+        .egypt-container { width: 100%; max-width: 420px; position: relative; z-index: 10; animation: egyptReveal 0.9s ease forwards; padding: 0 16px; margin: auto; }
+        @keyframes egyptReveal { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+        .egypt-hiero { display: flex; justify-content: center; gap: 4px; margin-bottom: 5px; }
+        .egypt-hiero span { font-size: 18px; opacity: 0.55; color: #C9A84C; animation: hieroPulse 3s ease-in-out infinite alternate; }
+        .egypt-hiero span:nth-child(2) { animation-delay: 0.5s; }
+        .egypt-hiero span:nth-child(3) { animation-delay: 1s; }
+        .egypt-hiero span:nth-child(4) { animation-delay: 1.5s; }
+        .egypt-hiero span:nth-child(5) { animation-delay: 2s; }
+        @keyframes hieroPulse { from { opacity: 0.3; } to { opacity: 0.75; } }
+
+        .egypt-eye-ra { text-align: center; font-size: 32px; margin-bottom: 5px; color: #C9A84C; filter: drop-shadow(0 0 12px rgba(201,168,76,0.5)); animation: egyptGlow 2.5s ease-in-out infinite alternate; }
+        @keyframes egyptGlow { from { filter: drop-shadow(0 0 8px rgba(201,168,76,0.4)); } to { filter: drop-shadow(0 0 18px rgba(201,168,76,0.8)); } }
+
+        .egypt-header { text-align: center; margin-bottom: 15px; }
+        .egypt-title { font-family: 'Marcellus', serif; font-size: 28px; color: #F4E4B0; line-height: 1.1; margin: 0; text-shadow: 0 0 30px rgba(201,168,76,0.3), 0 2px 10px rgba(0,0,0,0.6); }
+        .egypt-title span { color: #E8A020; }
+        .egypt-school { margin-top: 5px; font-size: 11px; color: rgba(244,228,176,0.5); letter-spacing: 0.5px; }
+
+        .egypt-card {
+            background: linear-gradient(160deg, rgba(30,24,10,0.95) 0%, rgba(13,17,23,0.97) 100%);
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; padding: 18px 20px 15px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 50px rgba(42,122,110,0.15), 0 8px 40px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.3);
+        }
+        .egypt-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, #2A7A6E, #C9A84C, #E8A020, #C9A84C, #2A7A6E); }
+
+        .egypt-tabs { display: flex; gap: 0; margin-bottom: 15px; border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; overflow: hidden; }
+        
+        .egypt-tab, #girisEkrani button.tab-btn.egypt-tab {
+            flex: 1 !important; padding: 10px 8px !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 1px !important; text-transform: uppercase !important; border: none !important; background: transparent !important; color: rgba(201,168,76,0.4) !important; cursor: pointer !important; transition: all 0.25s !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; height: auto !important; max-width: none !important;
+        }
+        .egypt-tab.active, #girisEkrani button.tab-btn.egypt-tab.active { background: linear-gradient(135deg, rgba(42,122,110,0.7), rgba(42,122,110,0.4)) !important; color: #F4E4B0 !important; }
+        .egypt-tab:not(:last-child) { border-right: 1px solid rgba(201,168,76,0.15) !important; }
+
+        .egypt-field { margin-bottom: 12px; text-align: left; position: relative; z-index: 5; }
+        .egypt-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #3BA898; margin-bottom: 6px; opacity: 0.85; }
+        .egypt-input-wrap { position: relative; }
+        .egypt-iicon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: rgba(201,168,76,0.35); pointer-events: none; }
+        .egypt-input { width: 100%; padding: 10px 14px 10px 38px; background: rgba(13,17,23,0.8); border: 1px solid rgba(201,168,76,0.18); border-radius: 4px; color: #F4E4B0; font-family: 'Josefin Sans', sans-serif; font-size: 14px; font-weight: 400; outline: none; transition: all 0.25s; -webkit-appearance: none; box-sizing: border-box; }
+        .egypt-input option { background: #0D1117; color: #F4E4B0; }
+        .egypt-input::placeholder { color: rgba(244,228,176,0.2); font-weight: 300; }
+        .egypt-input:focus { border-color: rgba(42,122,110,0.7); background: rgba(42,122,110,0.08); box-shadow: 0 0 0 3px rgba(42,122,110,0.1), inset 0 1px 4px rgba(0,0,0,0.4); }
+
+        .egypt-btn, #girisEkrani button.action-btn.btn-login.egypt-btn {
+            width: 100% !important; padding: 12px 20px !important; margin-top: 4px !important; margin-bottom: 0 !important; background: linear-gradient(135deg, #2A7A6E 0%, #3BA898 100%) !important; border: 1px solid rgba(201,168,76,0.4) !important; border-radius: 4px !important; color: #F4E4B0 !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 3px !important; text-transform: uppercase !important; cursor: pointer !important; transition: all 0.3s !important; text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important; position: relative !important; overflow: hidden !important; z-index: 5 !important; box-shadow: none !important; display: inline-block !important; height: auto !important;
+        }
+        .egypt-btn:hover, #girisEkrani button.action-btn.btn-login.egypt-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 26px rgba(42,122,110,0.5), 0 0 14px rgba(201,168,76,0.15) !important; }
+
+        .egypt-quote { text-align: center; margin-top: 12px; position: relative; z-index: 5; font-size: 10px; color: rgba(244,228,176,0.28); line-height: 1.6; font-weight: 300; letter-spacing: 0.3px; }
+        .egypt-quote cite { display: block; font-style: italic; font-size: 9px; color: rgba(201,168,76,0.4); margin-top: 2px; letter-spacing: 1px; }
+
+        .egypt-footer { text-align: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(201,168,76,0.1); display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .egypt-footer-text { font-size: 10px; color: rgba(244,228,176,0.3); letter-spacing: 0.3px; }
+        .egypt-footer a { color: #3BA898; text-decoration: none; font-size: 14px; transition: color 0.3s; margin-top: 2px; }
+        .egypt-footer a:hover { color: #C9A84C; }

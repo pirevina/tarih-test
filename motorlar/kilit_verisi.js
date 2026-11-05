@@ -1,0 +1,18 @@
+window.PORTAL_KILIT_VERISI = {
+    "sinif9": {
+        "kilitli": [
+            "u2",
+            "u3"
+        ],
+        "sonGuncelleme": "2026-11-05T10:30:39.188Z",
+        "guncelleyen": "Murat Mutlu (Öğretmen)"
+    },
+    "sinif10": {
+        "kilitli": [
+            "u2",
+            "u3"
+        ],
+        "sonGuncelleme": "2026-11-05T10:30:39.189Z",
+        "guncelleyen": "Murat Mutlu (Öğretmen)"
+    }
+};
